@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: 'class', theme: { extend: { colors: { 'error': '#ffb4ab', 'inverse-on-surface': '#2f3034', 'on-secondary': '#2c3138', 'on-primary-fixed': '#410002', 'surface-container-lowest': '#0c0e11', 'on-secondary-container': '#b7bcc5', 'on-tertiary-fixed': '#0d1c2d', 'surface-container-low': '#1a1c1f', 'on-secondary-fixed-variant': '#42474e', 'primary': '#ffb4ab', 'outline-variant': '#5c403c', 'tertiary-container': '#647387', 'surface-container': '#1e2023', 'surface-container-highest': '#333538', 'on-error': '#690005', 'on-primary-container': '#fff6f5', 'surface-bright': '#37393d', 'on-tertiary-fixed-variant': '#39485a', 'primary-fixed': '#ffdad6', 'on-tertiary-container': '#f6f8ff', 'secondary': '#c2c7cf', 'on-primary': '#690005', 'on-primary-fixed-variant': '#93000b', 'surface-variant': '#333538', 'secondary-fixed-dim': '#c2c7cf', 'secondary-container': '#474c53', 'surface-dim': '#111316', 'surface': '#111316', 'background': '#111316', 'tertiary': '#b9c8de', 'tertiary-fixed-dim': '#b9c8de', 'on-surface-variant': '#e6bdb8', 'outline': '#ac8884', 'on-error-container': '#ffdad6', 'on-secondary-fixed': '#171c22', 'tertiary-fixed': '#d4e4fa', 'primary-fixed-dim': '#ffb4ab', 'surface-container-high': '#282a2d', 'on-surface': '#e2e2e6', 'inverse-surface': '#e2e2e6', 'on-background': '#e2e2e6', 'on-tertiary': '#233143', 'surface-tint': '#ffb4ab', 'primary-container': '#dc2626', 'inverse-primary': '#bf0715', 'secondary-fixed': '#dee3ec', 'error-container': '#93000a' }, borderRadius: { 'DEFAULT': '0.125rem', 'lg': '0.25rem', 'xl': '0.5rem', 'full': '0.75rem' }, spacing: { 'gutter-md': '1.5rem', 'space-2xl': '3rem', 'space-xl': '2rem', 'margin-desktop': '3rem', 'space-3xl': '4rem', 'gutter-lg': '2rem', 'margin-tablet': '2rem', 'space-sm': '0.5rem', 'space-lg': '1.5rem', 'space-md': '1rem', 'space-xs': '0.25rem', 'panel-gap': '1px', 'margin-mobile': '1rem', 'space-xxs': '0.125rem', 'gutter-sm': '1rem' }, fontFamily: { 'body-lg': ['Inter'], 'headline-md': ['Space Grotesk'], 'headline-lg': ['Space Grotesk'], 'metric-label': ['JetBrains Mono'], 'display-hero-mobile': ['Space Grotesk'], 'metric-display': ['JetBrains Mono'], 'spec-code': ['JetBrains Mono'], 'display-hero': ['Space Grotesk'], 'headline-lg-mobile': ['Space Grotesk'], 'headline-sm': ['Space Grotesk'], 'body-md': ['Inter'], 'body-sm': ['Inter'] }, fontSize: { 'body-lg': ['16px', { lineHeight: '24px', letterSpacing: '-0.01em', fontWeight: '400' }], 'headline-md': ['24px', { lineHeight: '32px', letterSpacing: '-0.01em', fontWeight: '600' }], 'headline-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.02em', fontWeight: '700' }], 'metric-label': ['12px', { lineHeight: '16px', letterSpacing: '0.06em', fontWeight: '500' }], 'display-hero-mobile': ['36px', { lineHeight: '44px', letterSpacing: '-0.02em', fontWeight: '700' }], 'metric-display': ['28px', { lineHeight: '32px', letterSpacing: '-0.02em', fontWeight: '600' }], 'spec-code': ['11px', { lineHeight: '14px', letterSpacing: '0.04em', fontWeight: '400' }], 'display-hero': ['56px', { lineHeight: '64px', letterSpacing: '-0.03em', fontWeight: '700' }], 'headline-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.02em', fontWeight: '700' }], 'headline-sm': ['20px', { lineHeight: '28px', letterSpacing: '0em', fontWeight: '600' }], 'body-md': ['14px', { lineHeight: '20px', letterSpacing: '0em', fontWeight: '400' }], 'body-sm': ['12px', { lineHeight: '16px', letterSpacing: '0em', fontWeight: '400' }] } } } };</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/90 backdrop-blur-md"><div class="h-16 w-full px-margin-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-md shrink-0"><img alt="Modern minimalist industrial high-precision logo for 'Lacers', featuring an abstract geometric CNC end mill cutter / technical caliper icon combined with the bold wordmark 'LACERS', dark theme with silver brushed aluminum and sharp technical red accent (#DC2626). Vector style, crisp edges, industrial engineering aesthetic.. Design context: - Primary color: #dc2626
+- Font: spaceGrotesk
+- Mode: dark
+- Roundness: rounded-sm
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VeWL7FbRDE_2_YbyXO9LJDtq_vsz2KwvRxCdPA9Zt8FQH1EadTTZeQETKnsSGEyiVf4u-Vki8MRsA6-AaebXQEuJ5pY3Sql1BwXB5zZfl6RhUhM0bM13ikEsddBZMGo_Lvz-jQ4Tjh6g13FwHieOjy39KQfps2k7GsQlBCiCPTiMOmdw07sXyeW62mDMvD7yDFpAWkR8Hsr2Yca-RuOVeXd4Evvr1HkNKZg22tW5qx82Jvup__Ws46JN0"/><div class="hidden xl:flex flex-col"><span class="font-headline-sm text-headline-sm font-bold tracking-tight text-on-surface leading-none">LACERS</span><span class="font-spec-code text-spec-code text-secondary tracking-widest uppercase mt-space-xxs">PRECISION CNC &amp; TOOLING</span></div></div><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-on-surface font-semibold"><a aria-current="page" class="uppercase transition-colors text-on-surface font-semibold" data-path="servicios" href="#">Servicios</a><a class="font-metric-label text-metric-label uppercase text-on-surface-variant hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">Materiales y Contracciones</a><a class="font-metric-label text-metric-label uppercase text-on-surface-variant hover:text-on-surface transition-colors" data-path="galeria-cnc" href="#">Galería CNC</a><a class="font-metric-label text-metric-label uppercase text-on-surface-variant hover:text-on-surface transition-colors" data-path="proceso" href="#">Proceso</a><a class="font-metric-label text-metric-label uppercase text-on-surface-variant hover:text-on-surface transition-colors" data-path="especificaciones" href="#">Especificaciones</a></nav><div class="flex items-center gap-space-md shrink-0"><div class="hidden 2xl:flex items-center gap-space-xs px-space-sm py-space-xxs rounded bg-surface-container-high"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#16A34A] opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-[#16A34A]"></span></span><span class="font-spec-code text-spec-code text-secondary tracking-wider uppercase">PLANTA ACTIVA // CNC 5-AXIS ONLINE</span></div><a class="inline-flex items-center justify-center px-space-md py-space-xs rounded bg-primary-container text-on-primary-container font-headline-sm text-body-sm font-bold tracking-wider uppercase shadow-[0_0_16px_rgba(220,38,38,0.25)] hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] transition-all" data-path="cotizacion-tecnica" href="#">SOLICITAR COTIZACIÓN TÉCNICA</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full text-on-surface">
+<!-- 1. HERO SECTION WIDESCREEN (2 COLUMNS) -->
+<section class="w-full px-margin-desktop py-space-xl bg-surface">
+<div class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-gutter-lg items-center">
+<!-- Left Column: Precision Headline & Tooling Actions -->
+<div class="xl:col-span-6 flex flex-col gap-space-md">
+<!-- System Status Badge -->
+<div class="inline-flex items-center gap-space-xs self-start px-space-sm py-space-xxs bg-surface-container-high rounded border border-secondary-container">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-80"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+</span>
+<span class="font-spec-code text-spec-code tracking-widest text-secondary uppercase">// INGENIERÍA Y MECANIZADO CNC // ALUMINIO 7075-T6 / 6061</span>
+</div>
+<!-- H1 Primary Machine Display -->
+<h1 class="font-display-hero text-display-hero uppercase tracking-tight text-on-surface font-bold">
+          Matricería CNC y Grabado de Alta Precisión en Aluminio para Calzado
+        </h1>
+<!-- Technical Description -->
+<p class="font-body-lg text-body-lg text-secondary leading-relaxed max-w-2xl">
+          Desde el modelado 3D CAD/CAM hasta el molde montado, probado y listo para inyección continua en planta. Tolerancias micrométricas y texturas complejas para la industria del calzado moderno.
+        </p>
+<!-- Tooling CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm pt-space-xs">
+<a class="inline-flex items-center gap-space-xs px-space-lg py-space-sm bg-primary-container text-on-primary-container font-headline-sm text-body-sm font-bold tracking-wider uppercase rounded shadow-[0_0_16px_rgba(220,38,38,0.35)] hover:shadow-[0_0_24px_rgba(220,38,38,0.6)] transition-all" href="#cotizacion">
+<span class="material-symbols-outlined text-[18px]">precision_manufacturing</span>
+<span>SOLICITAR COTIZACIÓN TÉCNICA</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-space-lg py-space-sm bg-surface-container text-on-surface font-headline-sm text-body-sm font-semibold tracking-wider uppercase rounded border border-secondary-container hover:border-tertiary transition-all" href="#galeria">
+<span class="material-symbols-outlined text-[18px] text-tertiary">grid_view</span>
+<span>VER CATÁLOGO DE TRABAJOS</span>
+</a>
+<a class="inline-flex items-center gap-space-xs px-space-md py-space-sm font-spec-code text-spec-code uppercase tracking-wider text-secondary hover:text-on-surface transition-colors" href="https://wa.me/5491149823301" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[16px] text-[#16A34A]">chat</span>
+<span>[ HABLAR CON INGENIERO POR WHATSAPP ]</span>
+</a>
+</div>
+<!-- Metric Anchors Footer -->
+<div class="grid grid-cols-3 gap-space-xs pt-space-sm border-t border-secondary-container/50">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[16px]">speed</span>
+<span class="font-spec-code text-spec-code uppercase text-secondary">Tiempos récord</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[16px]">verified</span>
+<span class="font-spec-code text-spec-code uppercase text-secondary">Ajuste cero rebaba</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[16px]">engineering</span>
+<span class="font-spec-code text-spec-code uppercase text-secondary">Atención modelistas</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Interactive CNC Viewport with HUD Telemetry -->
+<div class="xl:col-span-6 relative">
+<div class="relative bg-surface-container-low rounded p-space-xs border border-secondary-container overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+<!-- Viewport Header Strip -->
+<div class="flex items-center justify-between px-space-sm py-space-xxs bg-surface-container-lowest border-b border-secondary-container text-spec-code font-spec-code text-secondary">
+<div class="flex items-center gap-space-xs">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="text-on-surface font-semibold">VIEWPORT: CNC_AXIS_CAM_01</span>
+<span>// 7075-T6 BILLET</span>
+</div>
+<span class="text-on-surface-variant font-mono">FRAME: 144.2 FPS</span>
+</div>
+<!-- Active Mill Image Container -->
+<div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container-lowest">
+<img alt="Mecanizado CNC de alta velocidad fresando matriz de suela de calzado en bloque de duraluminio con líquido refrigerante activo" class="w-full h-full object-cover grayscale-[15%] contrast-125" src="https://lh3.googleusercontent.com/aida/AEtjO1W0hqjbqCxgYf1HrOCyGRgGgL2PLFXnrPIcD2eIXCCC1ubu2ZSQGivGp0OxeofSR5ZPGLtBidiPqKuBxnPy0zEDCMhu1TEsUPNJUGIGGFtEgezDkATPdmUJZt3YYMpsSwGfHr9UIo9F6XOdaI-dhuJu3CQ-fJxKYUo0Ivgcahr8JImYOtJjCF_3yt9BMiqJe_g1u4gjQ6KpWhsY9G6huVL4nZW6wa8sbXN631GJJAVtn1Mhd9GeQlbIgwc"/>
+<!-- Hairline Calibration Grid Overlay -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25 stroke-secondary" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="mill-grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="0.5"></path>
+</pattern>
+</defs>
+<rect fill="url(#mill-grid)" height="100%" width="100%"></rect>
+<!-- Center Crosshair -->
+<circle cx="50%" cy="50%" fill="none" r="32" stroke="#DC2626" stroke-width="1"></circle>
+<line stroke="#DC2626" stroke-dasharray="4 4" stroke-width="0.75" x1="50%" x2="50%" y1="0" y2="100%"></line>
+<line stroke="#DC2626" stroke-dasharray="4 4" stroke-width="0.75" x1="0" x2="100%" y1="50%" y2="50%"></line>
+</svg>
+<!-- Top HUD Telemetry -->
+<div class="absolute top-space-sm left-space-sm flex flex-col gap-space-xxs bg-surface-container-lowest/85 backdrop-blur-sm px-space-sm py-space-xs rounded border border-secondary-container">
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-secondary">
+<span>SPINDLE:</span>
+<span class="text-on-surface font-semibold">24,000 RPM</span>
+<span class="text-secondary-container">|</span>
+<span>POTENCIA:</span>
+<span class="text-primary-container font-semibold">18.5 kW</span>
+</div>
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-secondary">
+<span>AVANCE FRESADO:</span>
+<span class="text-on-surface font-semibold">1,850 mm/min</span>
+</div>
+</div>
+<!-- Coordinate Readout HUD -->
+<div class="absolute top-space-sm right-space-sm bg-surface-container-lowest/85 backdrop-blur-sm px-space-sm py-space-xs rounded border border-secondary-container text-right font-spec-code text-spec-code">
+<div class="text-secondary">X: <span class="text-on-surface font-mono" id="tele-x">284.192</span> mm</div>
+<div class="text-secondary">Y: <span class="text-on-surface font-mono" id="tele-y">112.540</span> mm</div>
+<div class="text-secondary">Z: <span class="text-primary-container font-mono font-bold" id="tele-z">-14.285</span> mm</div>
+</div>
+<!-- Bottom Machine Status Bar -->
+<div class="absolute bottom-space-sm left-space-sm right-space-sm flex items-center justify-between px-space-sm py-space-xxs bg-surface-container-lowest/90 backdrop-blur-sm rounded border border-secondary-container text-spec-code font-spec-code">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[14px] text-[#16A34A]">water_drop</span>
+<span class="text-on-surface uppercase">REFRIGERACIÓN: NIEBLA MQL ACTIVA</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="text-secondary">STATUS:</span>
+<span class="text-[#16A34A] font-semibold uppercase">NOMINAL // EN TOLERANCIA</span>
+</div>
+</div>
+</div>
+<!-- Micro-adjustment bar below viewport -->
+<div class="flex items-center justify-between px-space-sm py-space-xxs bg-surface-container-high font-spec-code text-spec-code text-secondary">
+<span>CALIBRACIÓN ÓPTICA MITUTOYO</span>
+<span class="text-on-surface-variant font-semibold">TOLERANCIA ACTIVA: ±0.035 mm</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. HORIZONTAL METRICS BAR (4 COLUMNS FULL-WIDTH BRUSHED STRIP) -->
+<section class="w-full bg-surface-container-low border-y border-secondary-container">
+<div class="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-secondary-container">
+<!-- Metric 01 -->
+<div class="p-space-lg flex flex-col gap-space-xxs bg-surface-container/50">
+<div class="flex items-center justify-between">
+<span class="font-metric-label text-metric-label uppercase text-secondary">PRECISIÓN DIMENSIONAL</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">straighten</span>
+</div>
+<div class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">±0.05 mm</div>
+<div class="font-spec-code text-spec-code text-tertiary uppercase">Acabado superficial espejo Ra 0.4</div>
+</div>
+<!-- Metric 02 -->
+<div class="p-space-lg flex flex-col gap-space-xxs bg-surface-container/50">
+<div class="flex items-center justify-between">
+<span class="font-metric-label text-metric-label uppercase text-secondary">FORMATOS CAD NATIVOS</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">folder_zip</span>
+</div>
+<div class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">.STEP / .STL</div>
+<div class="font-spec-code text-spec-code text-tertiary uppercase">Compatibilidad IGES, DXF y OBJ</div>
+</div>
+<!-- Metric 03 -->
+<div class="p-space-lg flex flex-col gap-space-xxs bg-surface-container/50">
+<div class="flex items-center justify-between">
+<span class="font-metric-label text-metric-label uppercase text-secondary">ENTORNO CAD/CAM</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">laptop_chromebook</span>
+</div>
+<div class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">Rhino 3D &amp; CAM</div>
+<div class="font-spec-code text-spec-code text-tertiary uppercase">ArtCAM, JewelSmith &amp; PowerMill</div>
+</div>
+<!-- Metric 04 -->
+<div class="p-space-lg flex flex-col gap-space-xxs bg-surface-container/50">
+<div class="flex items-center justify-between">
+<span class="font-metric-label text-metric-label uppercase text-secondary">COBERTURA INTEGRAL</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">cached</span>
+</div>
+<div class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">360° En Planta</div>
+<div class="font-spec-code text-spec-code text-tertiary uppercase">Modelado, matricería, prueba e inyección</div>
+</div>
+</div>
+</section>
+<!-- 3. PRODUCTION CYCLE // SERVICES (4-COLUMN GRID MATRIX) -->
+<section class="w-full px-margin-desktop py-space-2xl bg-surface" id="servicios">
+<div class="max-w-[1600px] mx-auto flex flex-col gap-space-xl">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-primary-container uppercase">
+<span>// MÓDULO DE INGENIERÍA Y FABRICACIÓN</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase font-bold text-on-surface">Ciclo Integral de Producción</h2>
+</div>
+<span class="font-spec-code text-spec-code text-secondary uppercase">NORMAS ISO 9001:2015 // CONTROL 5-AXIS</span>
+</div>
+<!-- 4 Services Bento Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-md">
+<!-- Service 01 -->
+<div class="group flex flex-col justify-between p-space-lg bg-surface-container rounded border border-secondary-container hover:border-primary-container transition-all duration-200">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-spec-code text-primary-container font-bold">01 // CAD-CAM</span>
+<span class="px-space-xs py-space-xxs rounded bg-surface-container-high font-spec-code text-spec-code text-secondary">[ALGORITMO]</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase group-hover:text-primary transition-colors">
+              Ingeniería 3D y CAD/CAM
+            </h3>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+              Modelado paramétrico de huellas, graduación computarizada de talles punto por punto y cálculo de contracciones poliméricas precisas según el material de inyección.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-secondary-container/60 flex items-center justify-between text-spec-code font-spec-code">
+<span class="text-secondary uppercase">STATUS:</span>
+<span class="text-on-surface font-semibold">Curvatura dinámica OK</span>
+</div>
+</div>
+<!-- Service 02 -->
+<div class="group flex flex-col justify-between p-space-lg bg-surface-container rounded border border-secondary-container hover:border-primary-container transition-all duration-200">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-spec-code text-primary-container font-bold">02 // MATRICERÍA</span>
+<span class="px-space-xs py-space-xxs rounded bg-surface-container-high font-spec-code text-spec-code text-secondary">[MECANIZADO 5-EJES]</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase group-hover:text-primary transition-colors">
+              Fabricación de Moldes Completos
+            </h3>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+              Mecanizado integral de placas, portamoldes estándar y especiales, líneas de partición selladas, sistemas de expulsión y ajustes en banco de ajuste.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-secondary-container/60 flex items-center justify-between text-spec-code font-spec-code">
+<span class="text-secondary uppercase">TOLERANCIA:</span>
+<span class="text-on-surface font-semibold">Cierre estanco sin rebaba</span>
+</div>
+</div>
+<!-- Service 03 -->
+<div class="group flex flex-col justify-between p-space-lg bg-surface-container rounded border border-secondary-container hover:border-primary-container transition-all duration-200">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-spec-code text-primary-container font-bold">03 // GRABADO 3D</span>
+<span class="px-space-xs py-space-xxs rounded bg-surface-container-high font-spec-code text-spec-code text-secondary">[MICROFRESA 0.2mm]</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase group-hover:text-primary transition-colors">
+              Grabado y Texturizado 3D
+            </h3>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+              Grabado de logotipos microdefinidos, numeración de talle, texturas geométricas profundas y patrones antiderrapantes directamente en router CNC de precisión.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-secondary-container/60 flex items-center justify-between text-spec-code font-spec-code">
+<span class="text-secondary uppercase">RESOLUCIÓN:</span>
+<span class="text-on-surface font-semibold">Radio hasta 0.20 mm</span>
+</div>
+</div>
+<!-- Service 04 -->
+<div class="group flex flex-col justify-between p-space-lg bg-surface-container rounded border border-secondary-container hover:border-primary-container transition-all duration-200">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-spec-code text-primary-container font-bold">04 // MANTENIMIENTO</span>
+<span class="px-space-xs py-space-xxs rounded bg-surface-container-high font-spec-code text-spec-code text-secondary">[GUARDIA 24-48H]</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase group-hover:text-primary transition-colors">
+              Reparación y Puesta a Punto
+            </h3>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+              Eliminación de rebabas por fatiga de molde, cambio y fresado de insertos de marca, rectificado de planos y rescate urgente de matrices dañadas en línea.
+            </p>
+</div>
+<div class="pt-space-md mt-space-md border-t border-secondary-container/60 flex items-center justify-between text-spec-code font-spec-code">
+<span class="text-secondary uppercase">RESPUESTA:</span>
+<span class="text-on-surface font-semibold">Mecanizado express</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. APPLIED PHYSICS // MATERIALS & CONTRACTION (2-COLUMN TECHNICAL MATRIX) -->
+<section class="w-full px-margin-desktop py-space-2xl bg-surface-container-low border-y border-secondary-container" id="materiales-y-contracciones">
+<div class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-gutter-lg items-center">
+<!-- Left Column: Polymer Physics Theory -->
+<div class="xl:col-span-5 flex flex-col gap-space-md">
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-primary-container uppercase">
+<span>// TERMODINÁMICA Y POLÍMEROS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase font-bold text-on-surface leading-tight">
+          Física Aplicada al Molde: Contracciones &amp; Dilatación
+        </h2>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+          Cada compuesto termoplástico o termoestable experimenta una reducción volumétrica crítica durante la transición vítrea y solidificación. Fabricar un molde con escala 1:1 resulta invariablemente en una suela fuera de calce y deformación en puntera.
+        </p>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+          En <span class="text-on-surface font-semibold">LACERS</span> parametrizamos el factor de contracción tridimensional (<span class="font-spec-code text-on-surface font-mono">Shrinkage Factor Kf</span>) en cada eje de desmoldeo, asegurando que la pieza terminada cumpla la tabla de talles internacional exacta.
+        </p>
+<div class="p-space-md bg-surface-container rounded border border-secondary-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary-container text-[22px] shrink-0 mt-space-xxs">tune</span>
+<div class="flex flex-col gap-space-xxs">
+<span class="font-headline-sm text-body-sm font-bold uppercase text-on-surface">Compensación no lineal en CAD</span>
+<span class="font-body-sm text-body-sm text-secondary">Ajustamos diferentes factores en talón, enfranque y suelín según la densidad del espesor de pared.</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Interactive Polymer Benchmark Table -->
+<div class="xl:col-span-7 bg-surface-container rounded border border-secondary-container p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm border-b border-secondary-container">
+<span class="font-metric-label text-metric-label text-secondary uppercase">TABLA DE CONTRACCIÓN POLIMÉRICA TÉCNICA</span>
+<span class="font-spec-code text-spec-code text-primary-container uppercase font-semibold">BASE DURAL 7075 // 20°C</span>
+</div>
+<div class="flex flex-col gap-space-md font-spec-code text-spec-code">
+<!-- Polymer 1: PVC -->
+<div class="flex flex-col gap-space-xxs">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-bold">PVC <span class="text-secondary font-normal font-mono">(Policloruro de Vinilo)</span></span>
+<span class="text-primary-container font-mono font-bold">1.2% - 2.0%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 38%;"></div>
+</div>
+<span class="text-secondary">Compuestos compactos de piso y expandidos estándar.</span>
+</div>
+<!-- Polymer 2: TR -->
+<div class="flex flex-col gap-space-xxs">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-bold">TR <span class="text-secondary font-normal font-mono">(Termo-Caucho SBS / SEBS)</span></span>
+<span class="text-primary-container font-mono font-bold">1.5% - 2.2%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 44%;"></div>
+</div>
+<span class="text-secondary">Excelente memoria elástica, requiere compensación angular en cantos vivos.</span>
+</div>
+<!-- Polymer 3: PU -->
+<div class="flex flex-col gap-space-xxs">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-bold">PU <span class="text-secondary font-normal font-mono">(Poliuretano Bidensidad)</span></span>
+<span class="text-primary-container font-mono font-bold">1.0% - 1.4%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 28%;"></div>
+</div>
+<span class="text-secondary">Baja contracción volumétrica con estricto control de presión de inyección.</span>
+</div>
+<!-- Polymer 4: EVA -->
+<div class="flex flex-col gap-space-xxs">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-bold">EVA <span class="text-secondary font-normal font-mono">(Etilvinilacetato Reticulado)</span></span>
+<span class="text-primary-container font-mono font-bold">EXP. DINÁMICA (-35% a +60%)</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden">
+<div class="h-full bg-[#16A34A]" style="width: 85%;"></div>
+</div>
+<span class="text-secondary">Expansión al abrir molde y contracción térmica secundaria post-estabilización.</span>
+</div>
+<!-- Polymer 5: RUB -->
+<div class="flex flex-col gap-space-xxs">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-bold">RUBBER <span class="text-secondary font-normal font-mono">(Caucho Vulcanizado SBR)</span></span>
+<span class="text-primary-container font-mono font-bold">2.5% - 3.2%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 64%;"></div>
+</div>
+<span class="text-secondary">Prensado a alta temperatura (160°C). Mayor compensación de eje longitudinal.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. MACRO MACHINING GALLERY (3-COLUMN DETAILED INSPECTION CARDS) -->
+<section class="w-full px-margin-desktop py-space-2xl bg-surface" id="galeria-cnc">
+<div class="max-w-[1600px] mx-auto flex flex-col gap-space-xl">
+<!-- Section Title Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-primary-container uppercase">
+<span>// BANCO DE INSPECCIÓN VISUAL Y ACABADOS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase font-bold text-on-surface">Galería de Mecanizados Macro</h2>
+</div>
+<div class="font-spec-code text-spec-code text-secondary uppercase">
+          RESOLUCIÓN SUPERFICIAL RA: 0.40 - 0.80 µm
+        </div>
+</div>
+<!-- 3 Columns Macro Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter-md">
+<!-- Card 1: Moldes Inyección Armados -->
+<div class="flex flex-col bg-surface-container rounded border border-secondary-container overflow-hidden group">
+<div class="relative w-full aspect-[4/3] overflow-hidden bg-surface-container-lowest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Macro close-up shot of a heavy-duty industrial shoe sole injection mold milled from aircraft-grade 7075-T6 aluminum block, showing precision parting lines, guide pins, and stainless steel fasteners with high mechanical contrast in dark industrial lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6OtnDrFk43EjLgD1ZypEEikdtsS-eL6F39IgtgIfwSXqcyQSQAp8kQYmuVGwyhn0__Ds7o8RP9R3AwocClrL1HNbtQw72hN8YWN6S9U86j1bjF0elQderqLQnnXBSj2k3XXIMO_YDM2L5SBom0rOnzVkxyHsGb4iU5ArjKGccAxJP5CkNzvTwGnyi3jIpOrGCR5hQX0Kblnvr06WIiejtqN5ZHiD9lGhdkst9NoYLN0L2PwzUCjtYjw"/>
+<div class="absolute top-space-xs right-space-xs px-space-xs py-space-xxs bg-surface-container-lowest/90 border border-secondary-container rounded font-spec-code text-spec-code text-on-surface">
+              COD: #MOD-7075-ASSY
+            </div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase">
+              Moldes de Inyección Armados
+            </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+              Bloque aluminio dural 7075 con bujes templados, columnas guía y portamoldes de acero rectificado para prensas de alta presión continua.
+            </p>
+<div class="pt-space-xs mt-space-xs border-t border-secondary-container flex items-center justify-between font-spec-code text-spec-code">
+<span class="text-secondary">AJUSTE:</span>
+<span class="text-on-surface font-semibold">Tolerancia H7 / g6</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Texturas y Pisadas 3D Profundas -->
+<div class="flex flex-col bg-surface-container rounded border border-secondary-container overflow-hidden group">
+<div class="relative w-full aspect-[4/3] overflow-hidden bg-surface-container-lowest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Extreme macro technical photography of an aggressive mountain boot tread mold cavity milled in billet aluminum, featuring geometric micro-grooves, knurling textures, and sharp grip studs with glistening cutting coolant droplets under cold machine lights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5GLp3zTKIqV3zx5FEhzqf_VqmnTkBc3WI9TwwsSxTQCxVGzPzRp4eplXrIWOPMzck-pl1Ofc8Ip_7Ibdxd0gIQy9tKZgcXw8vSpacN11-r56uJhDoYvAlXQczMEHahNtg0AY0aU4qB07gmlkTpOfCq52e1yJu116GVa-xaQdhQkRuW1eLoUPmXj1uFjrhvOcuX76RcQWJ1--AhNuo334QKw33e0VYnDNKPzBLExVesmpvvxk6sL5s8A"/>
+<div class="absolute top-space-xs right-space-xs px-space-xs py-space-xxs bg-surface-container-lowest/90 border border-secondary-container rounded font-spec-code text-spec-code text-on-surface">
+              COD: #TXT-MICRO-HEX
+            </div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase">
+              Texturas y Pisadas 3D Profundas
+            </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+              Fresado 5 ejes con microfresas esféricas de 0.4 mm para huellas de máximo agarre técnico, estrías romboidales y estrías antiderrapantes.
+            </p>
+<div class="pt-space-xs mt-space-xs border-t border-secondary-container flex items-center justify-between font-spec-code text-spec-code">
+<span class="text-secondary">PASADA CAM:</span>
+<span class="text-on-surface font-semibold">Stepover 0.04 mm</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Grabados de Logotipo Sin Rebaba -->
+<div class="flex flex-col bg-surface-container rounded border border-secondary-container overflow-hidden group">
+<div class="relative w-full aspect-[4/3] overflow-hidden bg-surface-container-lowest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="High precision macro photo of footwear brand logo engraved into polished aluminum mold cavity, showing razor-sharp crisp edges, zero burrs, metallic tool marks, and calibrated depth markings in technical lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu9YaUOSuYZK1MODLaxvccxF3jqWkJyFqDELuRzlVz0zSsgmsUrSZly8SMNlMIY_1_U543pJ1yBddfRQEv9Id0E5LSsRlv4gDSVMCSQazbz7vNJb3FXDr3vqyiIY9kauXXkt_YNlFn536-GApkcACKkXZTNxsJrX38oRO1ihXcRfXXJIfJSma9Gi0Eub8G7r4hlY54p_QvHJq1d72tqg_JL0oLiYJDtulqRHWVHfYGfS5vqPD_YgZFDQ"/>
+<div class="absolute top-space-xs right-space-xs px-space-xs py-space-xxs bg-surface-container-lowest/90 border border-secondary-container rounded font-spec-code text-spec-code text-on-surface">
+              COD: #ENG-LOGO-ZERO-FLASH
+            </div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface uppercase">
+              Grabados de Logotipo Sin Rebaba
+            </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+              Tolerancia micrométrica en bordes de partición para evitar repasado manual en producción masiva. Letras y vectores con ángulo de desmolde óptimo.
+            </p>
+<div class="pt-space-xs mt-space-xs border-t border-secondary-container flex items-center justify-between font-spec-code text-spec-code">
+<span class="text-secondary">ÁNGULO SALIDA:</span>
+<span class="text-on-surface font-semibold">3° a 5° Cónico</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. CERTIFIED INDUSTRIAL WORKFLOW (HORIZONTAL 4-STEP TIMELINE) -->
+<section class="w-full px-margin-desktop py-space-2xl bg-surface-container-low border-y border-secondary-container" id="proceso">
+<div class="max-w-[1600px] mx-auto flex flex-col gap-space-xl">
+<!-- Section Title -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs font-spec-code text-spec-code text-primary-container uppercase">
+<span>// METODOLOGÍA INDUSTRIAL PASO A PASO</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase font-bold text-on-surface">Flujo de Trabajo Certificado</h2>
+</div>
+<span class="font-spec-code text-spec-code text-secondary uppercase">TRAZABILIDAD DE PIEZA DE PUNTA A PUNTA</span>
+</div>
+<!-- 4-Step Horizontal Pipeline -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-md relative">
+<!-- Step 01 -->
+<div class="flex flex-col gap-space-sm p-space-md bg-surface-container rounded border border-secondary-container relative">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-headline-md font-bold text-primary-container font-mono">01</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">upload_file</span>
+</div>
+<h3 class="font-headline-sm text-body-lg font-bold text-on-surface uppercase">
+            Recepción de Archivo o Muestra
+          </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+            Validación de planos CAD 3D (.STEP/.IGES) o digitalización tridimensional mediante palpador y escáner óptico de suelas físicas existentes.
+          </p>
+<div class="mt-auto pt-space-xs font-spec-code text-spec-code text-tertiary">
+            // CHEQUEO TOPOLÓGICO CAD
+          </div>
+</div>
+<!-- Step 02 -->
+<div class="flex flex-col gap-space-sm p-space-md bg-surface-container rounded border border-secondary-container relative">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-headline-md font-bold text-primary-container font-mono">02</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">architecture</span>
+</div>
+<h3 class="font-headline-sm text-body-lg font-bold text-on-surface uppercase">
+            Simulación CAM y Virtual Cut
+          </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+            Generación de trayectorias en ArtCAM/Rhino, compensación diferencial de contracción polimérica y simulación anticolisión 5 ejes.
+          </p>
+<div class="mt-auto pt-space-xs font-spec-code text-spec-code text-tertiary">
+            // POST-PROCESADO G-CODE
+          </div>
+</div>
+<!-- Step 03 -->
+<div class="flex flex-col gap-space-sm p-space-md bg-surface-container rounded border border-secondary-container relative">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-headline-md font-bold text-primary-container font-mono">03</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">precision_manufacturing</span>
+</div>
+<h3 class="font-headline-sm text-body-lg font-bold text-on-surface uppercase">
+            Mecanizado y Texturizado CNC
+          </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+            Desbaste de alta velocidad en centro de mecanizado vertical, pasadas de afinado a 24,000 RPM y grabado de microtextura con herramientas de diamante.
+          </p>
+<div class="mt-auto pt-space-xs font-spec-code text-spec-code text-tertiary">
+            // DURAL 7075-T6 BILLET
+          </div>
+</div>
+<!-- Step 04 -->
+<div class="flex flex-col gap-space-sm p-space-md bg-surface-container rounded border border-secondary-container relative">
+<div class="flex items-center justify-between">
+<span class="font-spec-code text-headline-md font-bold text-primary-container font-mono">04</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+</div>
+<h3 class="font-headline-sm text-body-lg font-bold text-on-surface uppercase">
+            Ajuste en Banco y Entrega
+          </h3>
+<p class="font-body-sm text-body-sm text-secondary leading-relaxed">
+            Verificación dimensional con calibres Mitutoyo, prueba de cierre estanco con azul de Prusia para garantizar cero rebaba, y despacho rápido a planta.
+          </p>
+<div class="mt-auto pt-space-xs font-spec-code text-spec-code text-tertiary">
+            // CERTIFICADO FINAL OK
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. TECHNICAL IMPACT CTA BANNER -->
+<section class="w-full px-margin-desktop py-space-2xl bg-surface" id="cotizacion">
+<div class="max-w-[1400px] mx-auto relative bg-surface-container-lowest rounded border-t-2 border-t-primary-container border-x border-b border-secondary-container p-space-2xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.8)]">
+<!-- Background Technical Grid Lines -->
+<div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#dc2626_1px,transparent_1px)] [background-size:24px_24px]"></div>
+<div class="relative z-10 flex flex-col items-center text-center gap-space-md max-w-4xl mx-auto">
+<!-- Status Identifier -->
+<div class="inline-flex items-center gap-space-xs px-space-sm py-space-xxs bg-surface-container rounded border border-secondary-container font-spec-code text-spec-code text-secondary uppercase">
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container"></span>
+<span>OFICINA TÉCNICA Y RECEPCIÓN CAD DISPONIBLE 24H</span>
+</div>
+<!-- Main CTA Title -->
+<h2 class="font-headline-lg text-headline-lg uppercase font-bold text-on-surface tracking-tight">
+          ¿Tienes una nueva temporada o un molde por reparar?
+        </h2>
+<!-- Explanatory Subtitle -->
+<p class="font-body-lg text-body-lg text-secondary leading-relaxed">
+          Envíanos tus archivos 3D (.STEP, .IGES, .STL) o coordina el retiro de tu muestra física. Emitimos respuesta técnica y presupuesto en menos de 24 horas hábiles.
+        </p>
+<!-- CTA Trigger Buttons -->
+<div class="flex flex-wrap items-center justify-center gap-space-md pt-space-sm">
+<a class="inline-flex items-center gap-space-sm px-space-xl py-space-md bg-primary-container text-on-primary-container font-headline-sm text-body-sm font-bold uppercase tracking-wider rounded shadow-[0_0_24px_rgba(220,38,38,0.4)] hover:shadow-[0_0_32px_rgba(220,38,38,0.7)] transition-all" href="https://wa.me/5491149823301?text=Hola%20Lacers,%20necesito%20cotizar%20un%20molde%20de%20aluminio%20para%20calzado" rel="noopener" target="_blank">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+<span>ENVIAR PLANO O MUESTRA POR WHATSAPP</span>
+</a>
+<button class="inline-flex items-center gap-space-sm px-space-xl py-space-md bg-surface-container text-on-surface font-headline-sm text-body-sm font-semibold uppercase tracking-wider rounded border border-secondary-container hover:border-tertiary transition-all" onclick="alert('Abriendo pasarela de carga CAD segura LACERS SFTP...')">
+<span class="material-symbols-outlined text-[20px] text-tertiary">cloud_upload</span>
+<span>SUBIR ARCHIVOS CAD AL SERVIDOR SEGURO</span>
+</button>
+</div>
+<!-- Industrial Guarantee Footer -->
+<div class="flex flex-col md:flex-row items-center justify-center gap-space-lg pt-space-md font-spec-code text-spec-code text-secondary border-t border-secondary-container/40 w-full mt-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary-container">support_agent</span>
+<span>Atención técnica directa con ingenieros de mecanizado</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary-container">lock</span>
+<span>Acuerdos de confidencialidad NDA garantizados</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Inline Micro-Interactions Script -->
+<script>
+  // Dynamic Coordinate Jitter to emulate live 5-axis CNC telemetry
+  (function initCncTelemetry() {
+    const elX = document.getElementById('tele-x');
+    const elY = document.getElementById('tele-y');
+    const elZ = document.getElementById('tele-z');
+    if (!elX || !elY || !elZ) return;
+
+    let baseX = 284.192;
+    let baseY = 112.540;
+    let baseZ = -14.285;
+
+    setInterval(() => {
+      const deltaX = (Math.random() * 0.03 - 0.015);
+      const deltaY = (Math.random() * 0.03 - 0.015);
+      const deltaZ = (Math.random() * 0.008 - 0.004);
+
+      elX.textContent = (baseX + deltaX).toFixed(3);
+      elY.textContent = (baseY + deltaY).toFixed(3);
+      elZ.textContent = (baseZ + deltaZ).toFixed(3);
+    }, 450);
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest pt-space-2xl pb-space-xl"><div class="w-full px-margin-desktop"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter-lg pb-space-2xl"><div class="flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><span class="font-headline-md text-headline-md tracking-tight font-bold text-on-surface">LACERS</span><span class="px-space-xs py-space-xxs rounded bg-surface-container-high font-spec-code text-spec-code text-secondary">ISO 9001:2015</span></div><p class="font-body-sm text-body-sm text-secondary leading-relaxed">Ingeniería de matrices de inyección y compresión en aleaciones de duraluminio 7075-T6 y fundición naval. Tolerancias mecánicas micrométricas para la industria global del calzado técnico y deportivo.</p><div class="flex items-center gap-space-xs font-spec-code text-spec-code text-on-surface-variant"><span class="material-symbols-outlined text-[16px] text-primary-container">verified</span><span>TOLERANCIA DIN EN ISO 2768-mH</span></div></div><div class="flex flex-col gap-space-sm"><h4 class="font-metric-label text-metric-label tracking-widest text-on-surface uppercase">Soluciones &amp; Mecanizado</h4><nav class="flex flex-col gap-space-xs"><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="servicios" href="#">Moldes de Inyección Directa al Corte</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="servicios" href="#">Matrices Monocolor y Bicolor</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="servicios" href="#">Grabado Láser y Texturizado CNC 3D</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="especificaciones" href="#">Digitalización CAD y Escaneo Óptico</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="proceso" href="#">Prototipado Rápido en Billet 6061</a></nav></div><div class="flex flex-col gap-space-sm"><h4 class="font-metric-label text-metric-label tracking-widest text-on-surface uppercase">Polímeros &amp; Contracciones</h4><nav class="flex flex-col gap-space-xs"><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">EVA Expandida / Reticulada (Contr. Var.)</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">Poliuretano Bidensidad (PU / TPU)</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">Caucho Vulcanizado &amp; Sintético (SBR)</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">Termoplásticos TR y PVC Compacto</a><a class="font-body-sm text-body-sm text-secondary hover:text-on-surface transition-colors" data-path="materiales-y-contracciones" href="#">Pebax &amp; Compuestos de Alto Rebote</a></nav></div><div class="flex flex-col gap-space-sm"><h4 class="font-metric-label text-metric-label tracking-widest text-on-surface uppercase">Ingeniería &amp; Planta</h4><div class="flex flex-col gap-space-xs font-body-sm text-body-sm text-secondary"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">precision_manufacturing</span><span>Parque Industrial Metalmecánico Nave 04-B</span></div><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">mail</span><span>ingenieria@lacers-cnc.com</span></div><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">chat</span><span>WhatsApp Técnico: +54 9 11 4982-3301</span></div><div class="flex items-center gap-space-xs mt-space-xs"><span class="font-spec-code text-spec-code text-primary-container font-semibold">TURNO MAQUINADO: 24/7 ACTIVO</span></div></div></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm"><div class="font-spec-code text-spec-code text-secondary tracking-wider">© 2024 LACERS MATRICERÍA INDUSTRIAL S.R.L. // TODOS LOS DERECHOS RESERVADOS.</div><div class="flex items-center gap-space-md font-spec-code text-spec-code text-on-surface-variant"><span class="hover:text-on-surface cursor-pointer">CALIDAD CERTIFICADA ISO 9001</span><span class="hover:text-on-surface cursor-pointer">NORMATIVA DE SEGURIDAD CE</span><span class="hover:text-on-surface cursor-pointer">ESPECIFICACIÓN CAD CAM STEP/IGES</span></div></div></div></footer></body></html>

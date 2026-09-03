@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Material Symbols requires this base rule to render as icon glyphs */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-canvas;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body text-main;
+  }
+
+  ::selection {
+    @apply bg-accent-red text-main;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-canvas;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-metal;
+  }
+}
+
+@layer components {
+  /* Tag técnico "// ETIQUETA" en rojo de acento, usado en cabeceras de sección */
+  .tag-technical {
+    @apply flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-accent-red;
+  }
+}
