@@ -14,8 +14,6 @@ import type {
 } from '@/types/landing'
 
 export const WHATSAPP_NUMBER = '5491149823301'
-export const WHATSAPP_QUOTE_MESSAGE =
-  'Hola Lacers, necesito cotizar un molde de aluminio para calzado'
 
 export const NAV_LINKS: NavLink[] = [
   { id: 'servicios', label: 'Servicios', href: '#servicios' },
@@ -30,7 +28,7 @@ export const HERO_CONTENT = {
   title: 'Matricería CNC y Grabado de Alta Precisión en Aluminio para Calzado',
   description:
     'Desde el modelado 3D CAD/CAM hasta el molde montado, probado y listo para inyección continua en planta. Tolerancias micrométricas y texturas complejas para la industria del calzado moderno.',
-  primaryCta: { label: 'SOLICITAR COTIZACIÓN TÉCNICA', href: '#cotizacion', icon: 'precision_manufacturing' },
+  primaryCta: { label: 'SOLICITAR COTIZACIÓN TÉCNICA', href: '/cotizador-tecnico', icon: 'precision_manufacturing' },
   secondaryCta: { label: 'VER CATÁLOGO DE TRABAJOS', href: '#galeria-cnc', icon: 'grid_view' },
   whatsappCta: { label: '[ HABLAR CON INGENIERO POR WHATSAPP ]', icon: 'chat' },
 }
@@ -311,8 +309,7 @@ export const CTA_BANNER_CONTENT = {
   title: '¿Tienes una nueva temporada o un molde por reparar?',
   description:
     'Envíanos tus archivos 3D (.STEP, .IGES, .STL) o coordina el retiro de tu muestra física. Emitimos respuesta técnica y presupuesto en menos de 24 horas hábiles.',
-  primaryCta: { label: 'ENVIAR PLANO O MUESTRA POR WHATSAPP', icon: 'chat' },
-  secondaryCta: { label: 'SUBIR ARCHIVOS CAD AL SERVIDOR SEGURO', icon: 'cloud_upload' },
+  cta: { label: 'COTIZAR', icon: 'precision_manufacturing', to: '/cotizador-tecnico' },
   guarantees: [
     { id: 'atencion-directa', icon: 'support_agent', label: 'Atención técnica directa con ingenieros de mecanizado' },
     { id: 'nda', icon: 'lock', label: 'Acuerdos de confidencialidad NDA garantizados' },
@@ -335,7 +332,7 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
       { id: 'l1', label: 'Moldes de Inyección Directa al Corte', href: '#servicios' },
       { id: 'l2', label: 'Matrices Monocolor y Bicolor', href: '#servicios' },
       { id: 'l3', label: 'Grabado Láser y Texturizado CNC 3D', href: '#servicios' },
-      { id: 'l4', label: 'Digitalización CAD y Escaneo Óptico', href: '#cotizacion' },
+      { id: 'l4', label: 'Digitalización CAD y Escaneo Óptico', href: '/cotizador-tecnico' },
       { id: 'l5', label: 'Prototipado Rápido en Billet 6061', href: '#proceso' },
     ],
   },

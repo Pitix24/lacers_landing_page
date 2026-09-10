@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { HERO_CONTENT, HERO_MICRO_CHECKS, WHATSAPP_NUMBER } from '@/data/landingData'
 import MaterialIcon from '@/components/common/MaterialIcon'
 import StatusPulseDot from '@/components/common/StatusPulseDot'
@@ -23,13 +24,13 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-1">
-            <a
-              href={HERO_CONTENT.primaryCta.href}
+            <Link
+              to={HERO_CONTENT.primaryCta.href}
               className="inline-flex items-center gap-2 rounded-sm bg-accent-red px-5 py-3 font-sans text-sm font-bold uppercase tracking-wider text-main shadow-glow-red transition-shadow hover:shadow-glow-red-lg"
             >
               <MaterialIcon name={HERO_CONTENT.primaryCta.icon} className="text-[18px]" />
               <span>{HERO_CONTENT.primaryCta.label}</span>
-            </a>
+            </Link>
             <a
               href={HERO_CONTENT.secondaryCta.href}
               className="inline-flex items-center gap-2 rounded-sm border border-metal bg-surface-card px-5 py-3 font-sans text-sm font-semibold uppercase tracking-wider text-main transition-colors hover:border-metal-deep"
