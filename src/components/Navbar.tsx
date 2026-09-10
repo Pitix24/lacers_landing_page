@@ -23,13 +23,13 @@ export default function Navbar() {
 
         <nav className="hidden items-center gap-6 lg:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.id}
-              href={link.href}
+              to={link.href}
               className="font-mono text-xs uppercase tracking-wide text-muted transition-colors hover:text-main"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 

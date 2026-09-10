@@ -16,11 +16,11 @@ import type {
 export const WHATSAPP_NUMBER = '5491149823301'
 
 export const NAV_LINKS: NavLink[] = [
-  { id: 'servicios', label: 'Servicios', href: '#servicios' },
-  { id: 'materiales-y-contracciones', label: 'Materiales y Contracciones', href: '#materiales-y-contracciones' },
-  { id: 'galeria-cnc', label: 'Galería CNC', href: '#galeria-cnc' },
-  { id: 'proceso', label: 'Proceso', href: '#proceso' },
-  { id: 'especificaciones', label: 'Especificaciones', href: '#cotizacion' },
+  { id: 'servicios', label: 'Servicios', href: '/#servicios' },
+  { id: 'materiales-y-contracciones', label: 'Materiales y Contracciones', href: '/#materiales-y-contracciones' },
+  { id: 'galeria-cnc', label: 'Galería CNC', href: '/#galeria-cnc' },
+  { id: 'proceso', label: 'Proceso', href: '/#proceso' },
+  { id: 'especificaciones', label: 'Especificaciones', href: '/#cotizacion' },
 ]
 
 export const HERO_CONTENT = {
@@ -329,22 +329,22 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
     id: 'soluciones',
     title: 'Soluciones & Mecanizado',
     links: [
-      { id: 'l1', label: 'Moldes de Inyección Directa al Corte', href: '#servicios' },
-      { id: 'l2', label: 'Matrices Monocolor y Bicolor', href: '#servicios' },
-      { id: 'l3', label: 'Grabado Láser y Texturizado CNC 3D', href: '#servicios' },
+      { id: 'l1', label: 'Moldes de Inyección Directa al Corte', href: '/#servicios' },
+      { id: 'l2', label: 'Matrices Monocolor y Bicolor', href: '/#servicios' },
+      { id: 'l3', label: 'Grabado Láser y Texturizado CNC 3D', href: '/#servicios' },
       { id: 'l4', label: 'Digitalización CAD y Escaneo Óptico', href: '/cotizador-tecnico' },
-      { id: 'l5', label: 'Prototipado Rápido en Billet 6061', href: '#proceso' },
+      { id: 'l5', label: 'Prototipado Rápido en Billet 6061', href: '/#proceso' },
     ],
   },
   {
     id: 'polimeros',
     title: 'Polímeros & Contracciones',
     links: [
-      { id: 'p1', label: 'EVA Expandida / Reticulada (Contr. Var.)', href: '#materiales-y-contracciones' },
-      { id: 'p2', label: 'Poliuretano Bidensidad (PU / TPU)', href: '#materiales-y-contracciones' },
-      { id: 'p3', label: 'Caucho Vulcanizado & Sintético (SBR)', href: '#materiales-y-contracciones' },
-      { id: 'p4', label: 'Termoplásticos TR y PVC Compacto', href: '#materiales-y-contracciones' },
-      { id: 'p5', label: 'Pebax & Compuestos de Alto Rebote', href: '#materiales-y-contracciones' },
+      { id: 'p1', label: 'EVA Expandida / Reticulada (Contr. Var.)', href: '/#materiales-y-contracciones' },
+      { id: 'p2', label: 'Poliuretano Bidensidad (PU / TPU)', href: '/#materiales-y-contracciones' },
+      { id: 'p3', label: 'Caucho Vulcanizado & Sintético (SBR)', href: '/#materiales-y-contracciones' },
+      { id: 'p4', label: 'Termoplásticos TR y PVC Compacto', href: '/#materiales-y-contracciones' },
+      { id: 'p5', label: 'Pebax & Compuestos de Alto Rebote', href: '/#materiales-y-contracciones' },
     ],
   },
 ]

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   FOOTER_BRAND,
   FOOTER_CERTIFICATIONS,
@@ -34,13 +35,13 @@ export default function Footer() {
               <h4 className="font-mono text-xs uppercase tracking-widest text-main">{group.title}</h4>
               <nav className="flex flex-col gap-2">
                 {group.links.map((link) => (
-                  <a
+                  <Link
                     key={link.id}
-                    href={link.href}
+                    to={link.href}
                     className="font-body text-sm text-muted transition-colors hover:text-main"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
