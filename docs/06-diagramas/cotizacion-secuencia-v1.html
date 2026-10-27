@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LACERS CNC // Secuencia de Cotización Técnica v1</title>
+  <!-- Generado desde cotizacion-secuencia-v1.md: editar el .md y regenerar, no este archivo a mano. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    /* Tokens de tailwind.config.js (DESIGN.md) */
+    :root {
+      --canvas: #0B0D0F; --canvas-deep: #121417;
+      --surface-card: #171A1E; --surface-card-deep: #1E2227;
+      --metal: #282C34; --metal-deep: #33383F;
+      --accent-red: #DC2626; --accent-red-light: #EF4444; --accent-green: #10B981;
+      --main: #FFFFFF; --muted: #9CA3AF;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--main); font-family: Inter, system-ui, sans-serif; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+      padding: 1rem 2rem; border-bottom: 1px solid var(--metal); background: var(--canvas-deep); }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent-red); }
+    .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--muted); }
+    main { max-width: 1600px; margin: 0 auto; padding: 2.5rem 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    h1 { margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 1.75rem; text-transform: uppercase; letter-spacing: -.01em; }
+    p { margin: 0; max-width: 72ch; color: var(--muted); font-size: .9rem; line-height: 1.6; }
+    code { font-family: 'JetBrains Mono', monospace; color: var(--main); }
+    .toolbar { display: flex; gap: .5rem; }
+    button { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .15em; text-transform: uppercase;
+      background: transparent; color: var(--main); border: 1px solid var(--metal); border-radius: 2px; padding: .5rem .9rem; cursor: pointer; }
+    button:hover { border-color: var(--accent-red); }
+    .panel { border: 1px solid var(--metal); border-radius: 2px; background: var(--surface-card); padding: 1.5rem; overflow: auto; }
+    .mermaid { margin: 0; transform-origin: top left; }
+    .mermaid svg { max-width: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="tag">// LACERS CNC · Diagramas</span>
+    <span class="meta">v1 · fuente: docs/06-diagramas/cotizacion-secuencia-v1.md</span>
+  </header>
+  <main>
+    <span class="tag">// Secuencia</span>
+    <h1>Cotización Técnica CNC: del wizard a Neon</h1>
+    <p>Flujo de <code>POST /api/quotes</code>: wizard React → <code>submitQuote()</code> → Vercel Function →
+      validación Zod e idempotencia → cálculo en servidor → transacción Prisma sobre Neon PostgreSQL.</p>
+    <div class="toolbar">
+      <button type="button" data-zoom="-0.1">− Zoom</button>
+      <button type="button" data-zoom="0">100%</button>
+      <button type="button" data-zoom="0.1">+ Zoom</button>
+    </div>
+    <div class="panel">
+<pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor U as Cliente (fabricante)
+    participant W as CotizadorTecnico.tsx&lt;br/&gt;(Wizard React)
+    participant C as client.ts&lt;br/&gt;submitQuote()
+    participant A as api/quotes.ts&lt;br/&gt;POST handler
+    participant H as server/http.ts
+    participant Z as schema.ts&lt;br/&gt;(Zod)
+    participant K as calc.ts
+    participant R as quotes-repo.ts&lt;br/&gt;(prismaRepo)
+    participant P as neon.ts&lt;br/&gt;PrismaClient + adapter-neon
+    participant DB as Neon PostgreSQL&lt;br/&gt;quote_requests
+
+    %% ── 1. Configuración en el wizard (solo estado local de React) ──
+    rect rgba(40, 44, 52, 0.35)
+        Note over U,W: Paso 1 a 4 en /cotizador-tecnico (estado local, sin red)
+        U-&gt;&gt;W: Elige requerimiento (processId) y aleación (alloyId o &quot;a verificar&quot;)
+        U-&gt;&gt;W: Elige polímero (polymerId) y modo de geometría (cad | muestra)
+        U-&gt;&gt;W: Define curva de tallas (sizeStart, sizeEnd)
+        W-&gt;&gt;W: Preview: pares = fin - inicio + 1&lt;br/&gt;código REQ-aleación-procesoPP
+        U-&gt;&gt;W: Completa contacto, acepta privacidad
+        W-&gt;&gt;W: canSubmit = ready y contactReady y fase distinta de sending
+    end
+
+    %% ── 2. Envío desde el cliente ──
+    U-&gt;&gt;+W: Click en &quot;Enviar solicitud&quot;
+    W-&gt;&gt;W: handleSubmit(): arma QuoteRequestInput&lt;br/&gt;(incluye honeypot website)
+    alt payload cambió o forceNewKey
+        W-&gt;&gt;W: submission.current = crypto.randomUUID() + payload
+    else mismo payload que el intento anterior
+        W-&gt;&gt;W: Reutiliza la misma Idempotency-Key (ADR-0009)
+    end
+    W-&gt;&gt;W: setSubmit(phase: sending)
+    W-&gt;&gt;+C: submitQuote(input, idempotencyKey)
+    C-&gt;&gt;C: AbortController, timeout 20 s (ADR-0011)
+    C-&gt;&gt;+A: POST /api/quotes&lt;br/&gt;Content-Type: application/json&lt;br/&gt;Idempotency-Key: uuid
+
+    %% ── 3. Validaciones de entrada ──
+    A-&gt;&gt;A: UUID_RE.test(Idempotency-Key)
+    alt Header ausente o no es UUID
+        A--&gt;&gt;C: 400 IDEMPOTENCY_KEY_REQUIRED
+    end
+    A-&gt;&gt;+H: readJsonBody(request)
+    H--&gt;&gt;-A: ok + value | 413 PAYLOAD_TOO_LARGE (16 kB) | 400 INVALID_JSON
+    alt Body inválido o demasiado grande
+        A--&gt;&gt;C: 413 / 400 con ApiErrorBody
+    end
+    A-&gt;&gt;+Z: quoteRequestInputSchema.safeParse(body)
+    Z--&gt;&gt;-A: success + data | issues
+    alt Falla la validación Zod
+        A-&gt;&gt;H: apiError(400, VALIDATION_ERROR, fields por path)
+        A--&gt;&gt;C: 400 VALIDATION_ERROR + fields
+    end
+    A-&gt;&gt;A: Separa honeypot: website y data
+    A-&gt;&gt;+H: canonicalHash(data)
+    H--&gt;&gt;-A: payloadHash (sha256, claves ordenadas)
+
+    %% ── 4. Selección de almacenamiento ──
+    A-&gt;&gt;+R: getQuotesRepo()
+    R-&gt;&gt;P: isDatabaseConfigured() / isMemoryFallbackAllowed()
+    R--&gt;&gt;-A: prismaRepo | memoryRepo (solo local) | null
+    alt repo = null (producción sin DATABASE_URL)
+        A-&gt;&gt;H: logEvent(quote.db_unavailable)
+        A--&gt;&gt;C: 503 DB_UNAVAILABLE
+    end
+
+    %% ── 5. Idempotencia + persistencia (máx. 2 vueltas) ──
+    loop attempt 0..1 (resuelve la carrera de doble envío)
+        A-&gt;&gt;+R: findBySubmissionKey(key)
+        R-&gt;&gt;+P: getPrisma()
+        P--&gt;&gt;-R: PrismaClient (singleton por instancia Fluid)
+        R-&gt;&gt;+DB: SELECT * FROM quote_requests WHERE submission_key = key
+        DB--&gt;&gt;-R: fila | vacío
+        R--&gt;&gt;-A: StoredQuote | null
+
+        alt Ya existe con otro payloadHash
+            A--&gt;&gt;C: 409 IDEMPOTENCY_KEY_REUSED + publicCode existente
+        else Ya existe con el mismo payloadHash (replay)
+            A--&gt;&gt;C: 200 QuoteCreatedResponse (registro original)
+        else No existe
+            A-&gt;&gt;+K: calcularEstimacion(data)
+            K--&gt;&gt;-A: pairs, projectCode, shrinkagePct, specialReasons&lt;br/&gt;(pairs_gt_30, polymer_expansive)
+            A-&gt;&gt;A: isSpam = Boolean(website)
+            A-&gt;&gt;+R: create(submissionKey, payloadHash, data, estimate, isSpam)
+            R-&gt;&gt;+DB: BEGIN
+            R-&gt;&gt;DB: INSERT quote_requests (status = nueva,&lt;br/&gt;calcVersion, privacyAcceptedAt = now)
+            DB--&gt;&gt;R: fila con folio autoincremental
+            R-&gt;&gt;K: buildPublicCode(projectCode, folio)
+            K--&gt;&gt;R: REQ-7075-MC08-000123
+            R-&gt;&gt;DB: UPDATE quote_requests SET public_code WHERE id
+            R-&gt;&gt;DB: COMMIT
+            DB--&gt;&gt;-R: fila final
+            alt P2002 unique violation (otra request ganó la carrera)
+                R--&gt;&gt;A: null, reintenta la vuelta y resuelve como replay
+            else Insert OK
+                R--&gt;&gt;-A: StoredQuote
+                A-&gt;&gt;H: logEvent(quote.created, publicCode, isSpam, special) sin PII
+                A--&gt;&gt;C: 201 QuoteCreatedResponse&lt;br/&gt;Cache-Control: no-store
+            end
+        end
+    end
+
+    opt Error de Prisma / Neon (catch)
+        A-&gt;&gt;H: logEvent(quote.db_error)
+        A--&gt;&gt;-C: 503 DB_UNAVAILABLE
+    end
+
+    %% ── 6. Respuesta en el wizard ──
+    alt 200 / 201
+        C--&gt;&gt;W: ok: true, quote
+        W-&gt;&gt;W: submission.current = null&lt;br/&gt;setSubmit(done), abre ficha
+        W--&gt;&gt;U: Ficha con publicCode, pares y contracción
+    else 400
+        C--&gt;&gt;W: kind: validation + fields
+        W--&gt;&gt;U: Errores por campo (FieldError)
+    else 409
+        C--&gt;&gt;W: kind: key_reused + publicCode
+        W--&gt;&gt;U: &quot;Tu solicitud ya quedó registrada&quot; + opción de nuevo envío
+    else 503 / timeout / red
+        C--&gt;&gt;-W: kind: unavailable
+        W--&gt;&gt;-U: Reintentar (misma key) o fallback por WhatsApp
+    end
+</pre>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: 'base',
+      sequence: { showSequenceNumbers: true, mirrorActors: true, wrap: false, useMaxWidth: false },
+      themeVariables: {
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: '13px',
+        background: '#171A1E',
+        primaryColor: '#1E2227',
+        primaryBorderColor: '#33383F',
+        primaryTextColor: '#FFFFFF',
+        lineColor: '#9CA3AF',
+        textColor: '#FFFFFF',
+        actorBkg: '#1E2227',
+        actorBorder: '#DC2626',
+        actorTextColor: '#FFFFFF',
+        actorLineColor: '#33383F',
+        signalColor: '#9CA3AF',
+        signalTextColor: '#FFFFFF',
+        labelBoxBkgColor: '#121417',
+        labelBoxBorderColor: '#DC2626',
+        labelTextColor: '#FFFFFF',
+        loopTextColor: '#EF4444',
+        noteBkgColor: '#121417',
+        noteBorderColor: '#33383F',
+        noteTextColor: '#9CA3AF',
+        activationBkgColor: '#282C34',
+        activationBorderColor: '#10B981',
+        sequenceNumberColor: '#0B0D0F',
+      },
+    })
+    await mermaid.run({ querySelector: '.mermaid' })
+    const el = document.querySelector('.mermaid')
+    let scale = 1
+    document.querySelectorAll('[data-zoom]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const d = Number(b.dataset.zoom)
+        scale = d === 0 ? 1 : Math.min(2, Math.max(0.4, scale + d))
+        el.style.transform = `scale(${scale})`
+      }),
+    )
+  </script>
+</body>
+</html>
