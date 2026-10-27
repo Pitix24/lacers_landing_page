@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "skills": {
+    "archify": {
+      "source": "tt-a1i/archify",
+      "sourceType": "github",
+      "skillPath": "archify/SKILL.md",
+      "computedHash": "e9ef0923cda908886e667eb48e36b29e81d0a7a7b9fe2bc05f3779be271e5119"
+    },
+    "caveman": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "skillPath": "skills/caveman/SKILL.md",
+      "computedHash": "71b600c88c8d1d36f18c4875db23b53c5d6cb9ba3195e19451d6b1bb67db07c4"
+    },
+    "crear-guardrail": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/crear-guardrail/SKILL.md",
+      "computedHash": "4c0fa8970f036b976713efe988fee7e04c4baf32a4c912e16b92d03335e5e4b6"
+    },
+    "deploy-pass": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/deploy-pass/SKILL.md",
+      "computedHash": "559b6d2181930bce364d47a792e757c708f0f38268104b479560856f78c13e35"
+    },
+    "generar-backlog": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-backlog/SKILL.md",
+      "computedHash": "61636b8a17478c8e5e4697d1b67e17c0778521fb32b511b1a8ccddc84260a82f"
+    },
+    "generar-prd-conversacional": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-prd-conversacional/SKILL.md",
+      "computedHash": "ce805471d4e69d1048d68f61b71d74e241808677ee1206f90ebb01d06fd69fe0"
+    },
+    "generar-readme": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-readme/SKILL.md",
+      "computedHash": "a5b7228ee44fde0135f9f1f66e23f7fdf0d5fe279d537c1b7755054d24d15e4a"
+    },
+    "generar-tech-design": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/generar-tech-design/SKILL.md",
+      "computedHash": "d104ed15212ba3e8cf26795900b459f7ca2cb507757f99995b3a99bcc4538283"
+    },
+    "mermaid-diagrams": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/mermaid-diagrams/SKILL.md",
+      "computedHash": "6d36e69adad781f106a2fb4b19ebc22bf0c211babdc0d1ae5822fa65abb48bd8"
+    },
+    "playwright-e2e-test": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-e2e-test/SKILL.md",
+      "computedHash": "96882a6fde60d2947cf3cb5d2f46a0c75c29e9daf2d6ef50a22c089548c71440"
+    },
+    "revision-adversarial": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/revision-adversarial/SKILL.md",
+      "computedHash": "8e00c53aae94c9803443b6d5343e013a7228edd4a67bca2e62e4ce947d3bd500"
+    },
+    "security-pass": {
+      "source": "adminoryslabs/Armory",
+      "sourceType": "github",
+      "skillPath": "skills/security-pass/SKILL.md",
+      "computedHash": "bde512586fb57f2d91d1d573867bd9f298d1c32428d022d1e6686324e0f8dace"
+    }
+  }
+}
