@@ -39,11 +39,12 @@ export const quoteRequestInputSchema = z
       name: z.string().trim().min(2, { error: 'Ingresá tu nombre.' }).max(120),
       company: optionalText(120),
       email: z
-        .union([z.literal(''), z.email().max(200)], { error: 'Email inválido.' })
+        // El error va en la rama: Zod 4 reporta el issue de la rama que coincide en tipo, no el de la unión.
+        .union([z.literal(''), z.email({ error: 'Email inválido.' }).max(200, { error: 'Email inválido.' })])
         .optional()
         .transform((value) => (value ? value.toLowerCase() : undefined)),
       phone: z
-        .union([z.literal(''), z.string().trim().regex(/^[+\d][\d\s()-]{5,30}$/)], { error: 'Teléfono inválido.' })
+        .union([z.literal(''), z.string().trim().regex(/^[+\d][\d\s()-]{5,30}$/, { error: 'Teléfono inválido.' })])
         .optional()
         .transform((value) => (value ? value : undefined)),
     }),
