@@ -1,0 +1,51 @@
+schema: spec-driven
+
+# Contexto del proyecto: se muestra a la IA al crear artefactos.
+context: |
+  Proyecto: LACERS CNC — landing de matricería CNC en aluminio para calzado, con Cotizador
+  Técnico (/cotizador-tecnico) que persiste solicitudes y panel /admin para gestionarlas.
+
+  Fuentes de verdad (leer antes de proponer):
+  - Producto: docs/01-producto/PRD.md
+  - Diseño UI: docs/02-diseno/DESIGN.md (tokens de tailwind.config.js, rounded-sm)
+  - Arquitectura: docs/03-arquitectura/TECH-DESIGN.md + docs/03-arquitectura/adrs/0001-0014
+  - Backlog y orden de changes: docs/04-backlog/BACKLOG.md
+
+  Stack: Vite + React 18 + TypeScript + Tailwind 3 + React Router 7 (SPA). Vercel Hobby con
+  Vercel Functions en api/ (firma Web Request/Response, runtime Node.js), lógica de servidor
+  en server/, librería compartida pura en src/lib/cotizador/ (Zod + calcularEstimacion).
+  PostgreSQL en Neon (ramas main/dev) vía Prisma 7 + @prisma/adapter-neon (ADR-0014, reemplaza
+  a ADR-0004). Schema en prisma/schema.prisma, cliente en server/neon.ts.
+  Auth admin: cookie firmada HMAC con Web Crypto + Routing Middleware (middleware.ts).
+
+  Convenciones:
+  - Catálogo (CNC_ALLOYS, CNC_PROCESSES, CNC_POLYMERS) en src/data/landingData.ts, tipado;
+    nada de catálogo hardcodeado en componentes.
+  - Copy en español rioplatense (voseo); tags técnicos con prefijo //.
+  - Secrets solo en variables de entorno del servidor; nunca con prefijo VITE_.
+  - Imports relativos en server/ y api/ con extensión .js (ESM).
+  - npm run build debe pasar (prisma generate + tsc SPA + tsc -p tsconfig.api.json + vite build).
+
+rules:
+  proposal:
+    - Citar el ítem de docs/04-backlog/BACKLOG.md y los ADRs que implementa.
+    - Incluir una sección "No alcance" alineada con el PRD.
+    - Si el change contradice un ADR Aceptado, decirlo explícitamente y proponer un ADR nuevo
+      en vez de desviarse en silencio.
+  specs:
+    - Escenarios en formato WHEN/THEN derivados de los criterios de aceptación del TDD.
+    - Usar los códigos HTTP y la forma de error de ADR-0006.
+  design:
+    - No repetir el TDD; referenciarlo y documentar solo las decisiones nuevas del change.
+  tasks:
+    - Incluir una tarea final de verificación (npm run build + tests del change).
+    - Tareas de máximo ~2 horas.
+
+operations:
+  apply:
+    guidance:
+      - Migraciones en orden dev → preview → main (ADR-0004); nunca contra main sin checklist.
+      - No loguear email, teléfono ni nombre de contacto.
+  archive:
+    guidance:
+      - Al archivar, actualizar el estado del ítem en docs/05-specs/README.md.
