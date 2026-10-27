@@ -6,7 +6,7 @@ El detalle de alcance y la trazabilidad están en
 
 | # | Spec | Change OpenSpec | Depende de | Estado | Avance (Clase 9) | Bloqueos / pendientes |
 |---|---|---|---|---|---|---|
-| 1 | Persistencia PostgreSQL (Neon) + esquema **Prisma** de cotizaciones CNC | [`spec-01-persistencia-neon`](../../openspec/changes/spec-01-persistencia-neon/) | — | En implementación | 12/18 tareas | Aplicar migración + seed en `dev` (credenciales); temple de 6061; spike en preview |
+| 1 | Persistencia PostgreSQL (Neon) + esquema **Prisma** de cotizaciones CNC | [`spec-01-persistencia-neon`](../../openspec/changes/spec-01-persistencia-neon/) | — | En implementación | 14/20 tareas | Aplicar migración + seed en `dev`; temple de 6061; límite de Functions en Hobby |
 | 2 | API REST `/api/quotes` con validación server-side | [`spec-02-api-cotizaciones`](../../openspec/changes/spec-02-api-cotizaciones/) | #1 | En implementación | 13/18 tareas | Rate limit (ADR-0010), cron de retención, tests Vitest; **coeficientes de mecanizado** |
 | 3 | Wizard `/cotizador-tecnico` con API real + código de seguimiento | [`spec-03-wizard-api-real`](../../openspec/changes/spec-03-wizard-api-real/) | #2 | En implementación | 8/12 tareas | Borrador en `localStorage`, 429, e2e Playwright |
 | 4 | Panel `/admin` con autenticación | [`spec-04-panel-admin`](../../openspec/changes/spec-04-panel-admin/) | #1, #2 | En implementación (4b parcial) | 4/12 tareas | Auth definitiva (ADR-0008); detalle y PATCH; semántica de `cerrada` / `descartada` |
@@ -27,6 +27,16 @@ fallando hasta completar el ciclo `/opsx:propose`.
   WhatsApp.
 - **UI:** wizard con paso de contacto y confirmación con `public_code`; `/admin` lazy con listado.
 - **Subagentes:** `.claude/agents/code-reviewer.md` y `.claude/agents/spec-implementer.md`.
+
+### Cierre post-deploy (2026-10-27)
+
+- **Spike de plataforma (spec-01, 3.6):** verificada en producción con el deploy de `0ac9169`.
+  Las Functions de `api/` resuelven los imports `.js` de `src/lib` y el rewrite de la SPA no
+  captura `/api/`.
+- **Base de producción:** migraciones `init` y `rate_limits` y seed aplicados en la base Neon
+  conectada por la integración de Vercel.
+- **CI/CD:** el pipeline `.github/workflows/ci-cd.yml` corre completo en verde (build, E2E,
+  deploy por Deploy Hook y smoke post-deploy).
 
 Estados posibles: *Change creado, sin artefactos* → *Propuesto* (proposal, specs, design y tasks
 listos) → *En implementación* → *Archivado*.
