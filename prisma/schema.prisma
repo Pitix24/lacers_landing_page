@@ -1,0 +1,98 @@
+// Esquema de persistencia de LACERS CNC (PostgreSQL en Neon).
+// Decisión: ADR-0014 (Prisma + @prisma/adapter-neon) — reemplaza a ADR-0004 (Drizzle).
+// La URL de conexión vive en prisma.config.ts (Prisma 7), nunca en este archivo.
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../server/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Estados de una solicitud; transiciones en ADR-0005 (validación en servidor, spec-04).
+enum QuoteStatus {
+  nueva
+  en_revision
+  cotizada
+  cerrada
+  descartada
+}
+
+enum GeometryMode {
+  cad
+  muestra
+}
+
+enum CncMaterialKind {
+  alloy
+  polymer
+}
+
+/// Solicitud del Cotizador Técnico (/cotizador-tecnico). Modelo de ADR-0005.
+model QuoteRequest {
+  id    String @id @default(uuid()) @db.Uuid
+  folio Int    @unique @default(autoincrement())
+
+  /// REQ-<aleación|VRF>-<proceso><pares> — se repite entre solicitudes.
+  projectCode String @map("project_code")
+  /// projectCode + "-" + folio de 6 dígitos; es el código que ve el cliente.
+  publicCode  String? @unique @map("public_code")
+
+  /// Idempotency-Key del envío (ADR-0009).
+  submissionKey String @unique @map("submission_key") @db.Uuid
+  payloadHash   String @map("payload_hash")
+
+  /// Ids de catálogo (src/data/landingData.ts) como texto, sin FK (ADR-0005).
+  processId    String       @map("process_id")
+  /// NULL = aleación a verificar en banco de ajuste (token VRF en el código).
+  alloyId      String?      @map("alloy_id")
+  polymerId    String       @map("polymer_id")
+  geometryMode GeometryMode @map("geometry_mode")
+  sizeStart    Int          @map("size_start") @db.SmallInt
+  sizeEnd      Int          @map("size_end") @db.SmallInt
+  /// Calculado en servidor: sizeEnd - sizeStart + 1 (nunca se acepta del cliente).
+  pairs        Int          @db.SmallInt
+  note         String?
+
+  contactName       String   @map("contact_name")
+  contactCompany    String?  @map("contact_company")
+  contactEmail      String?  @map("contact_email")
+  contactPhone      String?  @map("contact_phone")
+  privacyAcceptedAt DateTime @map("privacy_accepted_at") @db.Timestamptz(6)
+
+  shrinkagePct   Decimal  @map("shrinkage_pct") @db.Decimal(5, 2)
+  calcVersion    String   @map("calc_version")
+  isSpecialCase  Boolean  @default(false) @map("is_special_case")
+  specialReasons String[] @default([]) @map("special_reasons")
+  /// Honeypot (ADR-0010): se guarda pero se oculta del listado por defecto.
+  isSpam         Boolean  @default(false) @map("is_spam")
+
+  status          QuoteStatus @default(nueva)
+  statusChangedAt DateTime    @default(now()) @map("status_changed_at") @db.Timestamptz(6)
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  anonymizedAt    DateTime?   @map("anonymized_at") @db.Timestamptz(6)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@map("quote_requests")
+}
+
+/// Espejo de solo lectura del catálogo CNC (aleaciones y polímeros). La fuente de verdad sigue
+/// siendo el código (ADR-0005); `npm run db:seed` lo sincroniza. Sin FK desde QuoteRequest.
+model CncMaterial {
+  id           String          @id
+  kind         CncMaterialKind
+  /// Serie (7075) o sigla del polímero (PVC); se usa en códigos y en el panel.
+  code         String
+  label        String
+  note         String?
+  /// Solo polímeros: contracción lineal en % (negativa = contrae).
+  shrinkagePct Decimal?        @map("shrinkage_pct") @db.Decimal(5, 2)
+  active       Boolean         @default(true)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("cnc_materials")
+}

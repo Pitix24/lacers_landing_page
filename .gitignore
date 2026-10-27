@@ -5,3 +5,9 @@ dist-ssr
 .DS_Store
 .vercel
 .env*
+
+# Prisma Client generado (npm run db:generate / build)
+server/generated
+
+# Ejemplo de variables: sí se versiona
+!.env.example

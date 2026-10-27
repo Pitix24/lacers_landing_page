@@ -5,14 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "prisma generate && tsc --noEmit && tsc -p tsconfig.api.json && vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "prisma generate && tsc --noEmit && tsc -p tsconfig.api.json",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "@prisma/adapter-neon": "^7.10.1",
+    "@prisma/client": "^7.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.18.3"
+    "react-router-dom": "^7.18.3",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",
@@ -20,8 +30,11 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^18.0.9",
     "postcss": "^8.4.49",
+    "prisma": "^7.10.1",
     "tailwindcss": "^3.4.15",
+    "tsx": "^4.23.15",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
   }
