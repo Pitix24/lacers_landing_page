@@ -14,7 +14,7 @@
 - [x] 2.5 Honeypot → `is_spam`; límite de 16 kB → 413; 405 en otros métodos
 - [x] 2.6 Sin base en producción → 503 `DB_UNAVAILABLE`; memoria solo en local/test
 - [x] 2.7 Logging JSON sin PII
-- [ ] 2.8 Rate limit por IP (ADR-0010), `ip_hash` y purga a 24 h (ADR-0013)
+- [x] 2.8 Rate limit atómico 5/10 min por IP (ADR-0010) — `server/rate-limit.ts` + migración `rate_limits` (Security Pass 2026-10-26). Pendiente: `ip_hash` en `quote_requests` y purga a 24 h (ADR-0013)
 - [ ] 2.9 `calcVersionChanged` en la respuesta
 
 ## 3. Operación

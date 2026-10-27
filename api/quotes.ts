@@ -3,9 +3,10 @@ import type { QuoteCreatedResponse } from '../src/lib/cotizador/api.js'
 import { quoteRequestInputSchema } from '../src/lib/cotizador/schema.js'
 import { apiError, canonicalHash, json, logEvent, readJsonBody } from '../server/http.js'
 import { getQuotesRepo, type StoredQuote } from '../server/quotes-repo.js'
+import { hitRateLimit, QUOTES_LIMIT } from '../server/rate-limit.js'
 
 // POST /api/quotes — alta pública de una solicitud del Cotizador Técnico (ADR-0006, ADR-0009).
-// Pendiente de spec-02: rate limit por IP (ADR-0010) y cron de retención (ADR-0013).
+// Rate limit por IP (ADR-0010). Pendiente de spec-02: cron de retención (ADR-0013).
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -31,6 +32,16 @@ function replayOrConflict(existing: StoredQuote, payloadHash: string, storage: Q
   return created(existing, storage, 200)
 }
 
+/** 429 con Retry-After si la IP superó el cupo; null si puede seguir (ADR-0010). */
+async function rateLimited(request: Request): Promise<Response | null> {
+  const limit = await hitRateLimit(request, QUOTES_LIMIT)
+  if (!limit.limited) return null
+  logEvent('quote.rate_limited', { retryAfter: limit.retryAfterSeconds })
+  const response = apiError(429, 'RATE_LIMITED', 'Recibimos muchas solicitudes desde tu conexión. Probá de nuevo en unos minutos o escribinos por WhatsApp.')
+  response.headers.set('Retry-After', String(limit.retryAfterSeconds))
+  return response
+}
+
 export async function POST(request: Request): Promise<Response> {
   const key = request.headers.get('idempotency-key') ?? ''
   if (!UUID_RE.test(key)) {
@@ -48,6 +59,9 @@ export async function POST(request: Request): Promise<Response> {
 
   const parsed = quoteRequestInputSchema.safeParse(body.value)
   if (!parsed.success) {
+    // Los intentos inválidos también consumen cupo (ADR-0010).
+    const limited = await rateLimited(request)
+    if (limited) return limited
     const fields = Object.fromEntries(parsed.error.issues.map((issue) => [issue.path.join('.'), issue.message]))
     return apiError(400, 'VALIDATION_ERROR', 'Revisá los datos de la solicitud.', fields)
   }
@@ -59,6 +73,12 @@ export async function POST(request: Request): Promise<Response> {
     for (let attempt = 0; attempt < 2; attempt++) {
       const existing = await repo.findBySubmissionKey(key)
       if (existing) return replayOrConflict(existing, payloadHash, repo.storage)
+
+      // Los replays idempotentes (arriba) no consumen cupo; un alta nueva sí, una sola vez.
+      if (attempt === 0) {
+        const limited = await rateLimited(request)
+        if (limited) return limited
+      }
 
       const estimate = calcularEstimacion(data)
       const isSpam = Boolean(website)

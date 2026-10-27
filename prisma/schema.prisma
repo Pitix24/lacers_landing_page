@@ -80,6 +80,16 @@ model QuoteRequest {
   @@map("quote_requests")
 }
 
+/// Contador de ventana fija para el rate limit (ADR-0010). `bucket` = sha256 de la IP (/64 en
+/// IPv6) + IP_HASH_SALT: nunca guarda la IP en claro. Se actualiza con un único upsert atómico.
+model RateLimit {
+  bucket      String   @id
+  windowStart DateTime @map("window_start") @db.Timestamptz(6)
+  hits        Int
+
+  @@map("rate_limits")
+}
+
 /// Espejo de solo lectura del catálogo CNC (aleaciones y polímeros). La fuente de verdad sigue
 /// siendo el código (ADR-0005); `npm run db:seed` lo sincroniza. Sin FK desde QuoteRequest.
 model CncMaterial {
