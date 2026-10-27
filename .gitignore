@@ -16,3 +16,6 @@ server/generated
 test-results/
 playwright-report/
 blob-report/
+
+# Config local del preview de Claude Code (lleva el ADMIN_TOKEN de prueba)
+.claude/launch.json
