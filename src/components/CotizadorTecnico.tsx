@@ -1,18 +1,29 @@
-import { useState } from 'react'
-import { CNC_ALLOYS, CNC_PROCESSES, DEFAULT_CNC_ALLOY_ID, WHATSAPP_NUMBER } from '@/data/landingData'
+import { useRef, useState } from 'react'
+import { CNC_ALLOYS, CNC_POLYMERS, CNC_PROCESSES, DEFAULT_CNC_ALLOY_ID, WHATSAPP_NUMBER } from '@/data/landingData'
+import { ALLOY_TO_VERIFY } from '@/lib/cotizador/calc'
+import { submitQuote, type SubmitQuoteResult } from '@/lib/cotizador/client'
+import type { QuoteCreatedResponse } from '@/lib/cotizador/api'
+import type { QuoteRequestInput } from '@/lib/cotizador/schema'
 import MaterialIcon from '@/components/common/MaterialIcon'
 import SectionHeading from '@/components/common/SectionHeading'
 import StatusPulseDot from '@/components/common/StatusPulseDot'
 
-type Polymer = 'pvc' | 'tr' | 'pu' | 'eva' | 'caucho'
 type GeoMode = 'cad' | 'muestra'
 
-const POLYMERS: Record<Polymer, { label: string; shrink: string }> = {
-  pvc: { label: 'PVC', shrink: '-1.4%' },
-  tr: { label: 'TR', shrink: '-1.6%' },
-  pu: { label: 'PU', shrink: '-1.2%' },
-  eva: { label: 'EVA expandida', shrink: '-1.8%' },
-  caucho: { label: 'Caucho', shrink: '-2.2%' },
+type SubmitState =
+  | { phase: 'idle' }
+  | { phase: 'sending' }
+  | { phase: 'done'; quote: QuoteCreatedResponse }
+  | { phase: 'error'; result: Exclude<SubmitQuoteResult, { ok: true }> }
+
+const inputClass =
+  'w-full rounded-sm border border-metal bg-canvas px-3.5 py-3 font-mono text-sm text-main outline-none focus:border-accent-red'
+
+const formatShrink = (pct: number) => `${pct.toFixed(1)}%`
+
+/** Error de un campo devuelto por la API (400 VALIDATION_ERROR). */
+function FieldError({ message }: { message?: string }) {
+  return message ? <span className="font-mono text-[10px] tracking-wide text-accent-red-light">{message}</span> : null
 }
 
 /** Panel de estado "chip" reutilizado en cada paso del wizard (pendiente / en configuración / completo). */
@@ -30,12 +41,20 @@ function StepStatus({ done, active }: { done: boolean; active: boolean }) {
 export default function CotizadorTecnico() {
   const [type, setType] = useState<string | null>(null)
   const [alloyId, setAlloyId] = useState<string | null>(null)
-  const [polymer, setPolymer] = useState<Polymer | null>(null)
+  const [polymer, setPolymer] = useState<string | null>(null)
   const [geoMode, setGeoMode] = useState<GeoMode>('cad')
   const [sizeStart, setSizeStart] = useState('36')
   const [sizeEnd, setSizeEnd] = useState('43')
   const [note, setNote] = useState('')
-  const [fichaOpen, setFichaOpen] = useState(false)
+  const [contactName, setContactName] = useState('')
+  const [contactCompany, setContactCompany] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [contactPhone, setContactPhone] = useState('')
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  const [website, setWebsite] = useState('')
+  const [submit, setSubmit] = useState<SubmitState>({ phase: 'idle' })
+  // Idempotency-Key (ADR-0009): se genera al enviar y se reutiliza mientras el payload no cambie.
+  const submission = useRef<{ key: string; payload: string } | null>(null)
 
   const start = Number(sizeStart) || 0
   const end = Number(sizeEnd) || 0
@@ -46,16 +65,23 @@ export default function CotizadorTecnico() {
   const alloyCode = alloy
     ? alloy.code
     : t
-      ? 'VRF'
+      ? ALLOY_TO_VERIFY
       : (CNC_ALLOYS.find((a) => a.id === DEFAULT_CNC_ALLOY_ID)?.code ?? '----')
   const alloyLabel = alloy ? alloy.label : t ? 'A verificar en banco de ajuste' : '--'
-  const p = polymer ? POLYMERS[polymer] : null
+  const polymerItem = CNC_POLYMERS.find((item) => item.id === polymer) ?? null
+  const p = polymerItem ? { label: polymerItem.label, shrink: formatShrink(polymerItem.shrinkagePct) } : null
   const ready = !!(type && polymer && pares > 0)
+  const contactReady = contactName.trim().length >= 2 && !!(contactEmail.trim() || contactPhone.trim()) && privacyAccepted
+  const canSubmit = ready && contactReady && submit.phase !== 'sending'
+  const [fichaOpen, setFichaOpen] = useState(false)
+  const quote = submit.phase === 'done' ? submit.quote : null
+  const fieldErrors = submit.phase === 'error' && submit.result.kind === 'validation' ? submit.result.fields : {}
 
   const step2Active = !!type
   const step4Active = !!type && !!polymer
 
-  const projectCode = `REQ-${alloyCode}-${t ? t.code + String(pares || 0).padStart(2, '0') : '[X]'}`
+  const projectCode =
+    quote ? quote.publicCode : `REQ-${alloyCode}-${t ? t.code + String(pares || 0).padStart(2, '0') : '[X]'}`
   const geoLabel =
     geoMode === 'cad' ? 'CAD nativo · pendiente de adjuntar' : 'Muestra física · pendiente de recepción en taller'
 
@@ -72,18 +98,47 @@ export default function CotizadorTecnico() {
     .join('\n')
   const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappSummary)}`
 
+  async function handleSubmit(forceNewKey = false) {
+    if (!canSubmit || !type || !polymer) return
+    const input: QuoteRequestInput = {
+      processId: type,
+      alloyId,
+      polymerId: polymer,
+      geometryMode: geoMode,
+      sizeStart: start,
+      sizeEnd: end,
+      note,
+      contact: { name: contactName, company: contactCompany, email: contactEmail, phone: contactPhone },
+      privacyAccepted: true,
+      website,
+    }
+    const payload = JSON.stringify(input)
+    if (forceNewKey || submission.current?.payload !== payload) {
+      submission.current = { key: crypto.randomUUID(), payload }
+    }
+    setSubmit({ phase: 'sending' })
+    const result = await submitQuote(input, submission.current.key)
+    if (result.ok) {
+      submission.current = null
+      setSubmit({ phase: 'done', quote: result.quote })
+      setFichaOpen(true)
+    } else {
+      setSubmit({ phase: 'error', result })
+    }
+  }
+
   return (
     <section className="w-full bg-canvas-deep px-4 py-16 md:px-8 lg:px-12">
       <div className="mx-auto flex max-w-[1600px] flex-col gap-8">
         <SectionHeading
           tag="// SOLICITUD DE COTIZACIÓN"
           title="Configuración de matriz // Nuevo proyecto"
-          badge="4 pasos // Ficha técnica por WhatsApp"
+          badge="4 pasos // Código de seguimiento"
         />
         <p className="max-w-[62ch] font-body text-sm leading-relaxed text-muted">
-          Definí el requerimiento en cuatro pasos. Al cerrar la configuración generamos la ficha técnica del proyecto y
-          la enviamos por WhatsApp a ingeniería. No se emiten precios en pantalla: la cotización se valida contra
-          archivo y banco de ajuste.
+          Definí el requerimiento en cuatro pasos. Al enviar, registramos la solicitud con un código de seguimiento y
+          la pasamos a ingeniería. No se emiten precios en pantalla: la cotización se valida contra archivo y banco de
+          ajuste.
         </p>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2.3fr)_minmax(290px,1fr)]">
@@ -204,18 +259,18 @@ export default function CotizadorTecnico() {
                 en talón, enfranque y suelín.
               </p>
               <div className="flex flex-wrap gap-2.5">
-                {(Object.keys(POLYMERS) as Polymer[]).map((key) => {
-                  const active = polymer === key
+                {CNC_POLYMERS.map((item) => {
+                  const active = polymer === item.id
                   return (
                     <button
-                      key={key}
+                      key={item.id}
                       type="button"
-                      onClick={() => setPolymer(key)}
+                      onClick={() => setPolymer(item.id)}
                       className={`rounded-sm border px-4 py-2 font-mono text-xs tracking-wide transition-colors ${
                         active ? 'border-accent-red bg-accent-red/10 text-main' : 'border-metal bg-surface-card-deep text-muted hover:border-metal-deep'
                       }`}
                     >
-                      {POLYMERS[key].label}
+                      {item.label}
                     </button>
                   )
                 })}
@@ -338,7 +393,7 @@ export default function CotizadorTecnico() {
                     Escalado y generación
                   </h3>
                 </div>
-                <StepStatus done={ready && fichaOpen} active={step4Active && !ready} />
+                <StepStatus done={ready && !!quote} active={step4Active && !ready} />
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <label className="flex flex-col gap-2">
@@ -378,21 +433,105 @@ export default function CotizadorTecnico() {
                   className="w-full resize-y rounded-sm border border-metal bg-canvas px-3.5 py-3 font-body text-[13px] leading-relaxed text-main outline-none focus:border-accent-red"
                 />
               </label>
+              <div className="flex flex-col gap-4 border-t border-metal/50 pt-5">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-accent-red">// Datos de contacto</span>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <label className="flex flex-col gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Nombre y apellido:</span>
+                    <input value={contactName} onChange={(e) => setContactName(e.target.value)} autoComplete="name" maxLength={120} className={inputClass} />
+                    <FieldError message={fieldErrors['contact.name']} />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Empresa (opcional):</span>
+                    <input value={contactCompany} onChange={(e) => setContactCompany(e.target.value)} autoComplete="organization" maxLength={120} className={inputClass} />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Email:</span>
+                    <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} autoComplete="email" maxLength={200} className={inputClass} />
+                    <FieldError message={fieldErrors['contact.email']} />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Teléfono / WhatsApp:</span>
+                    <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} autoComplete="tel" maxLength={32} className={inputClass} />
+                    <FieldError message={fieldErrors['contact.phone']} />
+                  </label>
+                </div>
+                {/* Honeypot (ADR-0010): invisible para personas, los bots lo completan. */}
+                <input
+                  type="text"
+                  name="website"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                />
+                <label className="flex items-start gap-3 font-body text-[13px] leading-relaxed text-muted">
+                  <input
+                    type="checkbox"
+                    checked={privacyAccepted}
+                    onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                    className="mt-1 accent-accent-red"
+                  />
+                  <span>
+                    Acepto que LACERS guarde estos datos para responder la cotización. Usamos el email o teléfono solo
+                    para este proyecto.
+                  </span>
+                </label>
+                <FieldError message={fieldErrors.privacyAccepted} />
+                <span className="font-mono text-[10px] tracking-wide text-muted">Dejanos al menos un email o un teléfono.</span>
+              </div>
               <div className="flex flex-col gap-3.5 border-t border-metal/50 pt-5">
                 <button
                   type="button"
-                  disabled={!ready}
-                  onClick={() => ready && setFichaOpen(true)}
+                  disabled={!canSubmit}
+                  onClick={() => void handleSubmit()}
                   className="inline-flex w-full items-center justify-center gap-2.5 rounded-sm bg-accent-red px-6 py-4 font-mono text-xs uppercase tracking-widest text-main shadow-glow-red transition-shadow hover:shadow-glow-red-lg disabled:cursor-not-allowed disabled:bg-metal disabled:text-muted disabled:shadow-none"
                 >
-                  <MaterialIcon name="chat" className="text-[18px]" />
-                  Generar ficha técnica y enviar por WhatsApp
+                  <MaterialIcon name={submit.phase === 'sending' ? 'progress_activity' : 'send'} className="text-[18px]" />
+                  {submit.phase === 'sending' ? 'Registrando solicitud…' : 'Enviar solicitud a ingeniería'}
                 </button>
-                <div className={`flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-widest ${ready ? 'text-accent-green' : 'text-muted'}`}>
-                  <MaterialIcon name={ready ? 'verified' : 'engineering'} className="text-[16px]" />
-                  {ready
-                    ? 'Configuración válida // lista para envío'
-                    : 'Completá los pasos 01, 02 y 04 para habilitar el envío'}
+                {submit.phase === 'error' ? (
+                  <div role="alert" className="flex flex-col gap-3 rounded-sm border border-accent-red/60 bg-accent-red/10 px-4 py-3.5">
+                    <span className="font-mono text-[11px] tracking-wide text-main">{submit.result.message}</span>
+                    {submit.result.kind === 'key_reused' ? (
+                      <button
+                        type="button"
+                        onClick={() => void handleSubmit(true)}
+                        className="w-fit rounded-sm border border-metal px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-main transition-colors hover:border-accent-red"
+                      >
+                        Enviar los cambios como nueva solicitud
+                      </button>
+                    ) : null}
+                    {submit.result.kind === 'unavailable' ? (
+                      <div className="flex flex-wrap gap-2.5">
+                        <button
+                          type="button"
+                          onClick={() => void handleSubmit()}
+                          className="rounded-sm border border-metal px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-main transition-colors hover:border-accent-red"
+                        >
+                          Reintentar
+                        </button>
+                        <a
+                          href={whatsappHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-sm border border-accent-green/60 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-accent-green"
+                        >
+                          Enviar por WhatsApp
+                        </a>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+                <div className={`flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-widest ${canSubmit ? 'text-accent-green' : 'text-muted'}`}>
+                  <MaterialIcon name={canSubmit ? 'verified' : 'engineering'} className="text-[16px]" />
+                  {!ready
+                    ? 'Completá los pasos 01, 02 y 04 para habilitar el envío'
+                    : !contactReady
+                      ? 'Completá tus datos de contacto y aceptá la privacidad'
+                      : 'Configuración válida // lista para envío'}
                 </div>
               </div>
             </div>
@@ -403,7 +542,7 @@ export default function CotizadorTecnico() {
             <div className="flex items-center gap-2.5 border-b border-metal px-5 py-4">
               <StatusPulseDot className="bg-accent-green" />
               <span className="font-mono text-[11px] font-semibold uppercase tracking-widest text-accent-green">
-                {fichaOpen ? 'Status: ficha generada' : 'Status: en configuración'}
+                {quote ? 'Status: solicitud registrada' : 'Status: en configuración'}
               </span>
             </div>
 
@@ -477,15 +616,18 @@ export default function CotizadorTecnico() {
         </div>
       </div>
 
-      {fichaOpen ? (
+      {fichaOpen && quote ? (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-canvas/90 p-6 backdrop-blur-sm">
           <div className="flex max-h-[86vh] w-full max-w-[520px] flex-col gap-5 overflow-auto rounded-sm border border-metal border-t-2 border-t-accent-red bg-surface-card p-7 shadow-panel">
             <div className="flex items-start justify-between gap-4">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-widest text-accent-red">
-                  // Ficha técnica generada
+                  // Solicitud registrada
                 </span>
-                <span className="font-mono text-xl font-semibold text-main">{projectCode}</span>
+                <span className="break-all font-mono text-xl font-semibold text-main">{quote.publicCode}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-accent-green">
+                  // Código de seguimiento: citalo al hablar con ingeniería
+                </span>
               </div>
               <button
                 type="button"
@@ -498,9 +640,9 @@ export default function CotizadorTecnico() {
             <div className="flex flex-col gap-3">
               {[
                 { label: 'Requerimiento:', value: t ? t.label : '--' },
-                { label: 'Polímero / contracción:', value: p ? `${p.label} / ${p.shrink}` : '--' },
+                { label: 'Polímero / contracción:', value: `${p ? p.label : '--'} / ${formatShrink(quote.shrinkagePct)}` },
                 { label: 'Geometría:', value: geoLabel },
-                { label: 'Curva / pares:', value: `${pares > 0 ? `${start}—${end}` : '--'} / ${pares} pares` },
+                { label: 'Curva / pares:', value: `${start}—${end} / ${quote.pairs} pares` },
                 { label: 'Aleación / tolerancia:', value: `${alloyLabel} / ${t ? t.tolerance : '--'}` },
                 { label: 'Máquina:', value: t ? t.machine : '--' },
               ].map((row, i) => (
@@ -513,9 +655,14 @@ export default function CotizadorTecnico() {
                 </div>
               ))}
             </div>
+            {quote.storage === 'memory' ? (
+              <p className="rounded-sm border border-metal bg-canvas px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-widest text-accent-red-light">
+                // Modo local: sin DATABASE_URL la solicitud queda en memoria y no se persiste
+              </p>
+            ) : null}
             <p className="font-body text-[13px] leading-relaxed text-muted">
-              La ficha viaja al canal de ingeniería con el archivo adjunto. Respuesta con cotización en menos de 24
-              horas hábiles.
+              Ingeniería ya tiene tu solicitud. Respuesta con cotización en menos de 24 horas hábiles. Si querés
+              adelantar el archivo o sumar detalles, escribinos por WhatsApp con el código.
             </p>
             <a
               href={whatsappHref}
@@ -524,7 +671,7 @@ export default function CotizadorTecnico() {
               onClick={() => setFichaOpen(false)}
               className="flex items-center justify-center gap-2.5 rounded-sm bg-accent-green px-4 py-3.5 font-mono text-xs font-semibold uppercase tracking-widest text-canvas"
             >
-              <MaterialIcon name="chat" className="text-[18px]" />[ Enviar por WhatsApp a ingeniería ]
+              <MaterialIcon name="chat" className="text-[18px]" />[ Seguir por WhatsApp con ingeniería ]
             </a>
           </div>
         </div>
