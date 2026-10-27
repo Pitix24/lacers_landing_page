@@ -97,3 +97,27 @@ export interface FooterCertification {
   id: string
   label: string
 }
+
+/** Aleación de bloque/placa ofrecida en el Cotizador Técnico. */
+export interface CncAlloy {
+  id: string
+  /** Serie sin temple; se usa en el código de proyecto (REQ-<code>-…). */
+  code: string
+  label: string
+  note: string
+}
+
+/** Tipo de requerimiento / proceso de mecanizado del paso 01 del Cotizador Técnico. */
+export interface CncProcess {
+  id: string
+  /** Sigla de 2 letras; se usa en el código de proyecto. */
+  code: string
+  label: string
+  icon: MaterialIconName
+  description: string
+  tag: string
+  tolerance: string
+  machine: string
+  /** Aleación preseleccionada; si se omite, la aleación se verifica en banco de ajuste. */
+  defaultAlloyId?: string
+}

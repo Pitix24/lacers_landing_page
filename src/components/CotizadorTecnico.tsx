@@ -1,18 +1,11 @@
 import { useState } from 'react'
-import { WHATSAPP_NUMBER } from '@/data/landingData'
+import { CNC_ALLOYS, CNC_PROCESSES, DEFAULT_CNC_ALLOY_ID, WHATSAPP_NUMBER } from '@/data/landingData'
 import MaterialIcon from '@/components/common/MaterialIcon'
 import SectionHeading from '@/components/common/SectionHeading'
 import StatusPulseDot from '@/components/common/StatusPulseDot'
 
-type RequirementType = 'molde' | 'textura' | 'reparacion'
 type Polymer = 'pvc' | 'tr' | 'pu' | 'eva' | 'caucho'
 type GeoMode = 'cad' | 'muestra'
-
-const TYPES: Record<RequirementType, { label: string; code: string; alloy: string; tol: string; machine: string }> = {
-  molde: { label: 'Molde completo nuevo', code: 'MC', alloy: 'Aluminio 7075-T6 (billet)', tol: '±0.05 mm', machine: 'Router 5-Axis' },
-  textura: { label: 'Texturizado / grabado 3D', code: 'TX', alloy: 'Aluminio 7075-T6 (billet)', tol: '±0.02 mm', machine: 'Router 5-Axis + microfresa' },
-  reparacion: { label: 'Reparación / ajuste de banco', code: 'RB', alloy: 'A verificar en banco de ajuste', tol: '±0.05 mm', machine: 'Centro vertical 3-ejes' },
-}
 
 const POLYMERS: Record<Polymer, { label: string; shrink: string }> = {
   pvc: { label: 'PVC', shrink: '-1.4%' },
@@ -21,12 +14,6 @@ const POLYMERS: Record<Polymer, { label: string; shrink: string }> = {
   eva: { label: 'EVA expandida', shrink: '-1.8%' },
   caucho: { label: 'Caucho', shrink: '-2.2%' },
 }
-
-const REQUIREMENT_CARDS: { id: RequirementType; icon: string; description: string; tag: string }[] = [
-  { id: 'molde', icon: 'precision_manufacturing', description: 'Placas, portamolde, línea de partición y expulsión desde billet.', tag: 'Mecanizado 5-ejes' },
-  { id: 'textura', icon: 'grid_view', description: 'Relieve, logotipos y trama sobre cavidad existente o nueva.', tag: 'Microfresa 0.2mm' },
-  { id: 'reparacion', icon: 'tune', description: 'Recuperación de filo, sellado de partición y ajuste dimensional.', tag: 'Guardia 24-48h' },
-]
 
 /** Panel de estado "chip" reutilizado en cada paso del wizard (pendiente / en configuración / completo). */
 function StepStatus({ done, active }: { done: boolean; active: boolean }) {
@@ -41,7 +28,8 @@ function StepStatus({ done, active }: { done: boolean; active: boolean }) {
  * no adjunta archivos ni fotos reales y no condiciona el resto del flujo.
  */
 export default function CotizadorTecnico() {
-  const [type, setType] = useState<RequirementType | null>(null)
+  const [type, setType] = useState<string | null>(null)
+  const [alloyId, setAlloyId] = useState<string | null>(null)
   const [polymer, setPolymer] = useState<Polymer | null>(null)
   const [geoMode, setGeoMode] = useState<GeoMode>('cad')
   const [sizeStart, setSizeStart] = useState('36')
@@ -53,20 +41,28 @@ export default function CotizadorTecnico() {
   const end = Number(sizeEnd) || 0
   const pares = end >= start && sizeStart !== '' && sizeEnd !== '' ? end - start + 1 : 0
 
-  const t = type ? TYPES[type] : null
+  const t = CNC_PROCESSES.find((proc) => proc.id === type) ?? null
+  const alloy = CNC_ALLOYS.find((a) => a.id === alloyId) ?? null
+  const alloyCode = alloy
+    ? alloy.code
+    : t
+      ? 'VRF'
+      : (CNC_ALLOYS.find((a) => a.id === DEFAULT_CNC_ALLOY_ID)?.code ?? '----')
+  const alloyLabel = alloy ? alloy.label : t ? 'A verificar en banco de ajuste' : '--'
   const p = polymer ? POLYMERS[polymer] : null
   const ready = !!(type && polymer && pares > 0)
 
   const step2Active = !!type
   const step4Active = !!type && !!polymer
 
-  const projectCode = `REQ-7075-${t ? t.code + String(pares || 0).padStart(2, '0') : '[X]'}`
+  const projectCode = `REQ-${alloyCode}-${t ? t.code + String(pares || 0).padStart(2, '0') : '[X]'}`
   const geoLabel =
     geoMode === 'cad' ? 'CAD nativo · pendiente de adjuntar' : 'Muestra física · pendiente de recepción en taller'
 
   const whatsappSummary = [
     `Solicitud de cotización técnica — ${projectCode}`,
     `Requerimiento: ${t ? t.label : '--'}`,
+    `Aleación: ${alloyLabel}`,
     `Polímero: ${p ? `${p.label} (${p.shrink})` : '--'}`,
     `Geometría: ${geoLabel}`,
     `Curva de tallas: ${pares > 0 ? `${start}—${end} (${pares} pares)` : '--'}`,
@@ -132,20 +128,23 @@ export default function CotizadorTecnico() {
                 <StepStatus done={!!type} active={!type} />
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {REQUIREMENT_CARDS.map((card) => {
+                {CNC_PROCESSES.map((card) => {
                   const active = type === card.id
                   return (
                     <button
                       key={card.id}
                       type="button"
-                      onClick={() => setType(card.id)}
+                      onClick={() => {
+                        setType(card.id)
+                        setAlloyId(card.defaultAlloyId ?? null)
+                      }}
                       className={`flex flex-col gap-3 rounded-sm border p-5 text-left transition-colors ${
                         active ? 'border-accent-red bg-surface-card-deep shadow-glow-red' : 'border-metal bg-surface-card hover:border-metal-deep'
                       }`}
                     >
                       <MaterialIcon name={card.icon} className={`text-[26px] ${active ? 'text-accent-red' : 'text-muted'}`} />
                       <span className="font-sans text-sm font-semibold uppercase tracking-tight text-main">
-                        {TYPES[card.id].label}
+                        {card.label}
                       </span>
                       <span className="font-body text-xs leading-relaxed text-muted">{card.description}</span>
                       <span
@@ -158,6 +157,30 @@ export default function CotizadorTecnico() {
                     </button>
                   )
                 })}
+              </div>
+              <div className="flex flex-col gap-3 border-t border-metal/50 pt-4">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted">Aleación del bloque:</span>
+                <div className="flex flex-wrap gap-2.5">
+                  {CNC_ALLOYS.map((a) => {
+                    const active = alloyId === a.id
+                    return (
+                      <button
+                        key={a.id}
+                        type="button"
+                        title={a.note}
+                        onClick={() => setAlloyId(a.id)}
+                        className={`rounded-sm border px-4 py-2 font-mono text-xs tracking-wide transition-colors ${
+                          active ? 'border-accent-red bg-accent-red/10 text-main' : 'border-metal bg-surface-card-deep text-muted hover:border-metal-deep'
+                        }`}
+                      >
+                        {a.label}
+                      </button>
+                    )
+                  })}
+                </div>
+                <span className="font-mono text-[11px] tracking-wide text-muted">
+                  {alloy ? alloy.note : 'Sin aleación definida: se verifica en banco de ajuste.'}
+                </span>
               </div>
             </div>
 
@@ -398,9 +421,9 @@ export default function CotizadorTecnico() {
               </span>
               <div className="flex flex-col gap-3.5">
                 {[
-                  { label: 'Aleación sugerida:', value: t ? t.alloy : 'Aluminio 7075-T6 (billet)' },
+                  { label: 'Aleación sugerida:', value: t || alloy ? alloyLabel : 'Aluminio 7075-T6 (billet)' },
                   { label: 'Contracción calculada:', value: p ? `${p.shrink} (base ${p.label})` : '-- (sin base)' },
-                  { label: 'Tolerancia activa:', value: t ? t.tol : '±0.05 mm' },
+                  { label: 'Tolerancia activa:', value: t ? t.tolerance : '±0.05 mm' },
                   { label: 'Máquina asignada:', value: t ? t.machine : 'Pendiente de asignación' },
                 ].map((row, i) => (
                   <div key={row.label} className={`flex flex-col gap-1 ${i > 0 ? 'border-t border-metal/50 pt-3.5' : ''}`}>
@@ -478,7 +501,7 @@ export default function CotizadorTecnico() {
                 { label: 'Polímero / contracción:', value: p ? `${p.label} / ${p.shrink}` : '--' },
                 { label: 'Geometría:', value: geoLabel },
                 { label: 'Curva / pares:', value: `${pares > 0 ? `${start}—${end}` : '--'} / ${pares} pares` },
-                { label: 'Aleación / tolerancia:', value: `${t ? t.alloy : '--'} / ${t ? t.tol : '--'}` },
+                { label: 'Aleación / tolerancia:', value: `${alloyLabel} / ${t ? t.tolerance : '--'}` },
                 { label: 'Máquina:', value: t ? t.machine : '--' },
               ].map((row, i) => (
                 <div

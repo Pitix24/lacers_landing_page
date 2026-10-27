@@ -1,4 +1,6 @@
 import type {
+  CncAlloy,
+  CncProcess,
   CoordinateAxis,
   FooterCertification,
   FooterContactItem,
@@ -301,6 +303,58 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
     description:
       'Verificación dimensional con calibres Mitutoyo, prueba de cierre estanco con azul de Prusia para garantizar cero rebaba, y despacho rápido a planta.',
     tag: '// CERTIFICADO FINAL OK',
+  },
+]
+
+export const DEFAULT_CNC_ALLOY_ID = '7075-t6'
+
+export const CNC_ALLOYS: CncAlloy[] = [
+  {
+    id: '7075-t6',
+    code: '7075',
+    label: 'Aluminio 7075-T6 (billet)',
+    note: 'Dural Al-Zn de máxima dureza; estándar para cavidades de inyección continua.',
+  },
+  {
+    id: '2024-t351',
+    code: '2024',
+    label: 'Aluminio Aeroespacial 2024-T351 (placa)',
+    note: 'Al-Cu con alivio de tensiones por estirado (T351): alta resistencia a fatiga; requiere anodizado contra corrosión.',
+  },
+]
+
+export const CNC_PROCESSES: CncProcess[] = [
+  {
+    id: 'molde',
+    code: 'MC',
+    label: 'Molde completo nuevo',
+    icon: 'precision_manufacturing',
+    description: 'Placas, portamolde, línea de partición y expulsión desde billet.',
+    tag: 'Mecanizado 5-ejes',
+    tolerance: '±0.05 mm',
+    machine: 'Router 5-Axis',
+    defaultAlloyId: '7075-t6',
+  },
+  {
+    id: 'textura',
+    code: 'TX',
+    label: 'Texturizado / grabado 3D',
+    icon: 'grid_view',
+    description: 'Relieve, logotipos y trama sobre cavidad existente o nueva.',
+    tag: 'Microfresa 0.2mm',
+    tolerance: '±0.02 mm',
+    machine: 'Router 5-Axis + microfresa',
+    defaultAlloyId: '7075-t6',
+  },
+  {
+    id: 'reparacion',
+    code: 'RB',
+    label: 'Reparación / ajuste de banco',
+    icon: 'tune',
+    description: 'Recuperación de filo, sellado de partición y ajuste dimensional.',
+    tag: 'Guardia 24-48h',
+    tolerance: '±0.05 mm',
+    machine: 'Centro vertical 3-ejes',
   },
 ]
 
