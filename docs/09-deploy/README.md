@@ -1,8 +1,8 @@
 # Deploy Plan — LACERS CNC
 
 Fecha: 2026-10-26
-Estado: GENERADO (workflow y config en el repo); EXECUTE pendiente de autorización (ver
-[Autorizaciones pendientes](#autorizaciones-pendientes))
+Estado: EJECUTADO — pipeline completo en verde y producción verificada el 2026-10-27 (ver
+[Registro de ejecución](#registro-de-ejecución-y-verificación))
 
 Objetivo de esta pasada: que **el único camino a producción** sea un pipeline de GitHub Actions
 con gates reales — build + esquema, E2E de Playwright — y que cada release quede verificado con
@@ -131,21 +131,28 @@ Functions en Vercel (eventos JSON sin PII de `logEvent`) y métricas de Neon, re
 Staging / Preview gated, branch protection, migraciones automáticas, monitoreo/alertas,
 hallazgos abiertos de [`SECURITY-REPORT.md`](../08-seguridad/SECURITY-REPORT.md).
 
-## Autorizaciones pendientes
+## Autorizaciones
 
-Ninguna de estas acciones se ejecutó. Cada una requiere aprobación explícita del dueño:
+Ejecutadas por el dueño el 2026-10-27:
 
-- [ ] Crear el Environment `production` en GitHub (`Pitix24/lacers_landing_page`).
-- [ ] Crear un Deploy Hook en Vercel (Settings → Git → Deploy Hooks, rama `main`) y guardarlo
-      **solo** como secret `VERCEL_DEPLOY_HOOK_URL` en `production`. *(o, opción B: secrets
-      `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`)*
-- [ ] Cargar la variable `PRODUCTION_URL` (URL pública del proyecto) en `production`.
-- [ ] Verificar en Vercel Production: `DATABASE_URL` (rama `production`), `ADMIN_TOKEN`,
-      `IP_HASH_SALT`.
-- [ ] Aplicar `npm run db:migrate` contra la rama `production` de Neon (si no está aplicada).
-- [ ] Commit + push a `main` de `ci-cd.yml` y `vercel.json` (dispara el primer run real).
+- [x] Crear el Environment `production` en GitHub (`Pitix24/lacers_landing_page`).
+- [x] Crear un Deploy Hook en Vercel (Settings → Git → Deploy Hooks, rama `main`) y guardarlo
+      **solo** como secret `VERCEL_DEPLOY_HOOK_URL` en `production`.
+- [x] Cargar la variable `PRODUCTION_URL` (URL pública del proyecto) en `production`.
+- [x] Variables en Vercel Production: `DATABASE_URL` / `DATABASE_URL_UNPOOLED` (integración de
+      Neon) y `ADMIN_TOKEN`.
+- [x] Aplicar `npm run db:migrate` y `npm run db:seed` contra la base de producción.
+- [x] Commit + push a `main` de `ci-cd.yml` y `vercel.json` (dispara el primer run real).
 
 ## Registro de ejecución y verificación
 
 - 2026-10-26 — DISCOVER + DESIGN + GENERATE: plan, `ci-cd.yml` y `vercel.json`
   (`git.deploymentEnabled: false`). Nada ejecutado contra Vercel, Neon ni GitHub.
+- 2026-10-27 — EXECUTE: Environment `production` con Deploy Hook y `PRODUCTION_URL`; Neon
+  conectado por la integración de Vercel; migraciones `init` y `rate_limits` y seed (7 materiales)
+  aplicados. Run `40455019854` en verde en los 4 jobs.
+- 2026-10-27 — VERIFY manual: landing, wizard, errores de la API (400/405/413/401) y `/admin`
+  protegido. Una cotización de prueba real (`REQ-7075-TX08-000001`) se registró en Neon; un
+  segundo clic en "Enviar" creó `-000002` porque el wizard descartaba la `Idempotency-Key`.
+  Corregido en `fix(cotizador): reutiliza la Idempotency-Key al reenviar`. Pendiente: cabeceras de
+  seguridad (SEC-02).

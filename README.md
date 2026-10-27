@@ -21,7 +21,7 @@ preliminar y guarda la solicitud en Postgres con un código de seguimiento; el i
 
 ## Demo
 
-- **Link:** *pendiente* (se publica en la variable `PRODUCTION_URL` al habilitar el pipeline).
+- **Link:** <https://proyect-landing-page.vercel.app> (`/cotizador-tecnico`, `/admin`).
 - **Video (~3 min):** *pendiente.*
 
 ## Quickstart
@@ -94,7 +94,8 @@ Las 14 ADRs, incluidas las de auth del admin (0008, 0012, aún no implementadas:
 
 ## Mapa de artefactos AI-First
 
-Cada paso consume el anterior. Índice completo y trazabilidad de un requisito de punta a punta en
+Cada paso consume el anterior. Proyecto, despliegue, decisiones técnicas, estructura para
+desarrollar con Claude Code y trazabilidad de un requisito de punta a punta en
 [`docs/README.md`](docs/README.md).
 
 | # | Paso | Artefacto | Skill / agente |
