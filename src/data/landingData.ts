@@ -1,5 +1,6 @@
 import type {
   CncAlloy,
+  CncPolymer,
   CncProcess,
   CoordinateAxis,
   FooterCertification,
@@ -13,7 +14,7 @@ import type {
   TechnicalMetric,
   TelemetryReadout,
   WorkflowStep,
-} from '@/types/landing'
+} from '../types/landing.js' // relativo: landingData también lo importa api/ (ESM)
 
 export const WHATSAPP_NUMBER = '5491149823301'
 
@@ -209,7 +210,7 @@ export const POLYMER_SHRINKAGE_TABLE: PolymerShrinkage[] = [
     note: 'Expansión al abrir molde y contracción térmica secundaria post-estabilización.',
   },
   {
-    id: 'rubber',
+    id: 'caucho',
     name: 'RUBBER',
     formula: '(Caucho Vulcanizado SBR)',
     rangeLabel: '2.5% - 3.2%',
@@ -356,6 +357,14 @@ export const CNC_PROCESSES: CncProcess[] = [
     tolerance: '±0.05 mm',
     machine: 'Centro vertical 3-ejes',
   },
+]
+
+export const CNC_POLYMERS: CncPolymer[] = [
+  { id: 'pvc', code: 'PVC', label: 'PVC', shrinkagePct: -1.4, isExpansive: false },
+  { id: 'tr', code: 'TR', label: 'TR', shrinkagePct: -1.6, isExpansive: false },
+  { id: 'pu', code: 'PU', label: 'PU', shrinkagePct: -1.2, isExpansive: false },
+  { id: 'eva', code: 'EVA', label: 'EVA expandida', shrinkagePct: -1.8, isExpansive: true },
+  { id: 'caucho', code: 'SBR', label: 'Caucho', shrinkagePct: -2.2, isExpansive: false },
 ]
 
 export const CTA_BANNER_CONTENT = {

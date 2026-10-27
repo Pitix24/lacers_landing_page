@@ -121,3 +121,15 @@ export interface CncProcess {
   /** Aleación preseleccionada; si se omite, la aleación se verifica en banco de ajuste. */
   defaultAlloyId?: string
 }
+
+/** Polímero de inyección del paso 02 del Cotizador Técnico (id canónico, ADR-0005). */
+export interface CncPolymer {
+  id: string
+  /** Sigla corta para el panel y la ficha técnica. */
+  code: string
+  label: string
+  /** Contracción lineal nominal en % (negativa = contrae). */
+  shrinkagePct: number
+  /** EVA expandida: la contracción no es lineal y se valida en banco (caso especial). */
+  isExpansive: boolean
+}
