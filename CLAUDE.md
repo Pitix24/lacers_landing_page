@@ -14,13 +14,16 @@ Landing de matricería CNC en aluminio para calzado, con Cotizador Técnico y pa
 ## Stack
 
 - Vite + React 18 + TypeScript + Tailwind CSS 3 + React Router 7 (SPA).
-- Deploy en Vercel. Backend previsto: Vercel Functions + PostgreSQL (Neon).
+- Deploy en Vercel. Backend previsto: Vercel Functions en `api/` + PostgreSQL (Neon) vía Prisma 7 +
+  `@prisma/adapter-neon` (ADR-0014). Lógica de servidor en `server/`, contrato y Zod en
+  `src/lib/cotizador/`.
 
 ## Comandos
 
 - `npm run dev` — servidor de desarrollo.
 - `npm run build` — `tsc --noEmit` + `vite build` (debe pasar antes de dar algo por terminado).
-- `npm run lint` — chequeo de tipos.
+- `npm run lint` — chequeo de tipos (SPA + `tsconfig.api.json`).
+- `npm run db:migrate` / `db:seed` — migraciones y seed de Prisma contra la rama `dev` de Neon.
 
 ## Estructura
 
@@ -38,4 +41,6 @@ Landing de matricería CNC en aluminio para calzado, con Cotizador Técnico y pa
   `accent-green`, `main`, `muted`); no introducir hex sueltos. `rounded-sm` por defecto.
 - Copy en español rioplatense (voseo); tags técnicos con prefijo `//`.
 - Para agregar aleaciones o procesos usar la skill `agregar-aleacion-cnc`.
+- Subagentes: `code-reviewer` (revisión de calidad/tipado/seguridad, solo lectura) y
+  `spec-implementer` (implementa una spec del backlog con Prisma + Neon dev).
 - Secrets (DB, JWT) solo en variables de entorno del servidor; nunca en el bundle del frontend.
