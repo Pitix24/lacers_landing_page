@@ -11,3 +11,8 @@ server/generated
 
 # Ejemplo de variables: sí se versiona
 !.env.example
+
+# Playwright (E2E)
+test-results/
+playwright-report/
+blob-report/
