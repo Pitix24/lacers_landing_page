@@ -56,4 +56,13 @@ test('completa el wizard de punta a punta y muestra la confirmación con código
   await expect(page.getByText('// Solicitud registrada')).toBeHidden()
   await expect(page.getByText('Status: solicitud registrada')).toBeVisible()
   await expect(page.getByText(codigo)).toBeVisible()
+
+  // Reenviar el mismo formulario reutiliza la Idempotency-Key: replay 200 con el mismo código
+  const registrado = await page.getByText(codigo).textContent()
+  const replay = page.waitForResponse((res) => res.url().endsWith('/api/quotes') && res.request().method() === 'POST')
+  await enviar.click()
+  const respuesta = await replay
+  expect(respuesta.status()).toBe(200)
+  expect((await respuesta.json()).publicCode).toBe(registrado)
+  await expect(page.getByText('// Solicitud registrada')).toBeVisible()
 })

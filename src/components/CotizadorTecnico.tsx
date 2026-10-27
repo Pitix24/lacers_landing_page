@@ -119,7 +119,7 @@ export default function CotizadorTecnico() {
     setSubmit({ phase: 'sending' })
     const result = await submitQuote(input, submission.current.key)
     if (result.ok) {
-      submission.current = null
+      // La clave se conserva: reenviar el mismo formulario es un replay (200, mismo código), no un alta nueva.
       setSubmit({ phase: 'done', quote: result.quote })
       setFichaOpen(true)
     } else {
